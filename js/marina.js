@@ -28,9 +28,9 @@ function buildScheduleRow(it) {
 		item.append(outActionIcon);
 	}
 
-	item.append('<a class="" href=#>'+it.boat_name+'</a>');
-	item.append('<span class="">'+it.action_date+'</span>');
-	item.append('<a id="sch-'+it.id+'" type="button" class="cancel-schedule btn btn-default btn-xs" href="/api/user/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>')
+	item.append('<a class="nombre-bote" href="#">'+it.boat_name+'</a> &nbsp; &nbsp; &nbsp; &nbsp;');
+	item.append('<span class="fecha-bote">'+it.action_date+'</span>');
+	item.append(' &nbsp; &nbsp;<a id="sch-'+it.id+'" type="btn-default" class="cancel-schedule btn btn-default btn-xs" href="/api/user/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>')
 
 	return item
 }
