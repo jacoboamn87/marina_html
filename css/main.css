@@ -42,7 +42,7 @@ img#main-logo{
 	text-align: center;
 	margin-top: 25px;
 	margin-bottom: 25px;
-	color: #504968;
+	color: #746a96;
 	font-size: 20px;
 	font-family: Swiss ThBt;
 }
@@ -104,6 +104,10 @@ input:focus{
 	padding-top: 15px;
 }
 
+select{
+	text-align: white;
+	width: 100%;
+}
 
 
 
@@ -118,10 +122,10 @@ input:focus{
 }
 
 .cancel-schedule{
-	float: right;
 }
 
 .fecha-bote{
-	
+		font-size: 0.7em;
+
 
 }
