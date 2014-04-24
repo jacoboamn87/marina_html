@@ -4,11 +4,11 @@
 /* CSS Document */
 @font-face {
 font-family: Swiss LtBt;
-src: url("../fonts/swissl.ttf");
+src: url("swissl.ttf");
 }
 @font-face {
 font-family: Swiss ThBt;
-src: url("../fonts/SWZ721T.TTF");
+src: url("SWZ721T.TTF");
 }
 html{
   height: 100%;
@@ -40,10 +40,10 @@ img#main-logo{
 }
 .top_message_row{
 	text-align: center;
-	margin-top: 60px;
-	margin-bottom: 15px;
-	color: #4b4b60;
-	font-size: 30px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	color: #504968;
+	font-size: 20px;
 	font-family: Swiss ThBt;
 }
 .content_login_row{
@@ -52,38 +52,42 @@ img#main-logo{
 
 }
 
+
+
+.btn, .login_button{
+	padding-left: 25px;
+	padding-right: 25px;
+	border-radius: 7px;
+}
+
+
 .input_email, .input_pass, input, select, input.form-control{
 
 	margin-bottom: 20px;
-	height: 70px;
+	height: 40px;
 	border: 1px #4b4b60 solid;
-	border-radius: 10px;
-	padding-left: 60px;
-	font-size: 20px;
+	border-radius: 7px;
+	padding-left:  60px;
+	font-size: 16px;
 	font-weight: bolder;
 	color: #fff;
-		border-radius: 6px; 
+	border-radius: 6px; 
 	background: transparent;
 }
 input:focus{
 	margin-bottom: 20px;
 	background-color: #2a2a38;
-	height: 80px;
-		background: transparent
-
+		background: transparent;
 	border: 1px #0094be solid;
-	border-radius: 10px;
+
 }
 .login_button{
-	min-width: 250px;
-	height: 60px;
-	font-size: 20px;
-	background: -webkit-linear-gradient(90deg, #fbb03b, #f5d919); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(90deg, #fbb03b, #f5d919); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(90deg, #fbb03b, #f5d919); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(90deg, #fbb03b, #f5d919); /* Standard syntax (must be last) */
+	max-width: 250px;
+	height: 30px;
+	font-size: 16px;
+	background: -webkit-linear-gradient(#ffdd00 0%, #ffb401 100%);
 	border: none;
-	border-radius: 10px;
+	border-radius: 6px; 
 	color: #666666;
 }
 .olvido_url{
@@ -114,10 +118,10 @@ input:focus{
 }
 
 .cancel-schedule{
-/* 	float: right; */
+	float: right;
 }
 
 .fecha-bote{
-	float: right;
+	
 
 }
