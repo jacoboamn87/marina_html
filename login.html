@@ -51,7 +51,8 @@
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
 			if ( $.cookie( 'token-auth' ) ) {
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
+				//window.location.replace( hostURL+'/schedule.html' );
 			};
 		});
 
@@ -98,7 +99,8 @@
 			request.done(function (response, textStatus, jqXHR){
 				// Set the authorization cookie
 				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
+				//window.location.replace( hostURL+'/schedule.html' );
 			});
 
 			// callback handler that will be called regardless

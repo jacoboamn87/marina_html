@@ -1,12 +1,14 @@
+/* @override http://hmpe.andresazp.webfactional.com/css/main.css */
+
 @charset "utf-8";
 /* CSS Document */
 @font-face {
 font-family: Swiss LtBt;
-src: url("swissl.ttf");
+src: url("../fonts/swissl.ttf");
 }
 @font-face {
 font-family: Swiss ThBt;
-src: url("SWZ721T.TTF");
+src: url("../fonts/SWZ721T.TTF");
 }
 html{
   height: 100%;
@@ -53,9 +55,10 @@ body{
 	padding-left: 60px;
 	font-size: 20px;
 	font-weight: bolder;
+	color: white; /* andres */
 }
 .input_email:focus, .input_pass:focus{
-	width: 80%;
+/* 	width: 80%; */
 	max-width: 400px;
 	margin-bottom: 20px;
 	background-color: #2a2a38;
@@ -103,9 +106,9 @@ body{
 }
 
 .cancel-schedule{
-	float: right;
+/* 	float: right; */
 }
 
 .fecha-bote{
-	padding-left: 15px;
+	float: right;
 }

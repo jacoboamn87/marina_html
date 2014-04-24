@@ -1,5 +1,5 @@
-var apiURL  = 'http://127.0.0.1:8000';
-var hostURL = 'http://hmpe.localhost';
+var apiURL  = 'http://marina.andresazp.webfactional.com';
+// var hostURL = 'http://hmpe.andresazp.webfactional.com';
 
 function buildScheduleList(schedule) {
 	var list = $( '<div>', {
@@ -28,9 +28,9 @@ function buildScheduleRow(it) {
 		item.append(outActionIcon);
 	}
 
-	item.append('<a class="" href=#>'+it.boat_name+'</a>');
-	item.append('<span class="">'+it.action_date+'</span>');
-	item.append('<a id="sch-'+it.id+'" type="button" class="cancel-schedule btn btn-default btn-xs" href="/api/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>')
+	item.append('<a class="nombre-bote" href="#">'+it.boat_name+'</a> &nbsp; &nbsp; &nbsp; &nbsp;');
+	item.append('<span class="fecha-bote">'+it.action_date+'</span>');
+	item.append(' &nbsp; &nbsp;<a id="sch-'+it.id+'" type="btn-default" class="cancel-schedule btn btn-default btn-xs" href="/api/user/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>')
 
 	return item
 }
@@ -51,6 +51,13 @@ function buildBoatsOptions(boats) {
 
 function buildOption(boat) {
 	return '<option value="' + boat.id + '" pl="' + boat.parking_lot + '">' + boat.name + '</option>';
+}
+
+function logout() {
+	$.removeCookie( 'token-auth' );
+	$.removeCookie( 'user-info' );
+	document.location.href = '/login.html';
+	//window.location.replace( hostURL+'/login.html' );
 }
 
 function getUserCookie() {
@@ -77,7 +84,8 @@ function getUserCookie() {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -109,7 +117,8 @@ function getUserSchedule(domId) {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -127,7 +136,7 @@ function getUserSchedule(domId) {
 	});
 }
 
-function deleteScheduledAction( domId, href, schId ) {
+function deleteScheduledAction( domId, href ) {
 	// variable to hold request
 	var request;
 
@@ -140,15 +149,16 @@ function deleteScheduledAction( domId, href, schId ) {
 	request = $.ajax({
 		async: 		false, 
 		url: 		apiURL+href,
-		type: 		'post',
+		type: 		'put',
 		dataType: 	'json',
-		data: 		{ id: schId, status: 'CAN' }, 
+		data: 		{ status: 'CAN' }, 
 		xhrFields: 	{ withCredentials: false },
 		headers: 	{ Authorization : $.cookie( 'token-auth' ) },
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -179,7 +189,8 @@ function getUserBoats(domId) {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
