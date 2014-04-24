@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Documento sin título</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<div class="container" id="header">
+			<div class="row top_logo_row">
+				<img class="top_logo" src="img/logo.png" width="309" height="57" />
+			</div>
+			<div class="row top_message_row">
+				Agenda
+			</div>
+		</div>
+		<!-- Content -->
+		<div class="container" id="content">
+			<div id="schedule-container" class="row content_row"></div>
+		</div>
+		<!-- Boton -->
+		<div class="container">
+			<div class="boton_solicitud">
+				<button id="newsch" class="login_button">RESERVAR</button>
+			</div>
+		</div>
+		<!-- Footer -->
+		<div class="container" id="footer">
+			<div class="row" id="footer_row">
+				J-40194581-3
+			</div>
+		</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.serialize-object.min.js"></script>
+	<script src="js/jquery.cookie.js"></script>
+	<script src="js/marina.js"></script>
+	<script type="text/javascript">
+		$( document ).on( 'ready', function() {
+			if ( !$.cookie( 'token-auth' ) ) {
+				window.location.replace( hostURL+'/login.html'  );
+			}
+
+			getUserCookie();
+
+			getUserSchedule('schedule-container');
+		});
+
+		$( document ).on('click', 'a.cancel-schedule', function(event) {
+			event.preventDefault();
+
+			deleteScheduledAction( $(this).attr('id'), $(this).attr('href'), $(this).attr('sch') );
+		});
+
+		$( '#newsch' ).on('click', function(event) {
+			window.location.replace( hostURL+'/newschedule.html' );
+		});		
+	</script>
+	</body>
+</html>
