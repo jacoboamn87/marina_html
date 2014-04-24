@@ -40,9 +40,7 @@
 		</div>
 		<div class="container" id="footer">
 			<div class="row" id="footer_row">
-				
 				J-40194581-3
-				
 			</div>
 		</div>
 	<script src="js/jquery.min.js"></script>
@@ -53,7 +51,8 @@
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
 			if ( $.cookie( 'token-auth' ) ) {
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
+				//window.location.replace( hostURL+'/schedule.html' );
 			};
 		});
 
@@ -100,7 +99,8 @@
 			request.done(function (response, textStatus, jqXHR){
 				// Set the authorization cookie
 				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
+				//window.location.replace( hostURL+'/schedule.html' );
 			});
 
 			// callback handler that will be called regardless

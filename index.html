@@ -12,8 +12,8 @@
 	</head>
 	<body>
 		<div class="container" id="header">
-			<div class="row top_logo_row col-sm-12">
-				<img id=main-logo class="top_logo" src="img/logo.png"  />
+			<div class="row top_logo_row">
+				<img class="top_logo" src="img/logo.png" width="309" height="57" />
 			</div>
 			<div class="row top_message_row">
 				BIENVENIDO
@@ -47,7 +47,7 @@
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
 			if ( $.cookie( 'token-auth' ) ) {
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
 			};
 		});
 
@@ -94,7 +94,7 @@
 			request.done(function (response, textStatus, jqXHR){
 				// Set the authorization cookie
 				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
 			});
 
 			// callback handler that will be called regardless
@@ -108,3 +108,4 @@
 	</script>
 	</body>
 </html>
+

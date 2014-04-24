@@ -1,5 +1,6 @@
+
 var apiURL  = 'http://marina.andresazp.webfactional.com';
-var hostURL = 'http://hmpe.andresazp.webfactional.com';
+// var hostURL = 'http://hmpe.andresazp.webfactional.com';
 
 function buildScheduleList(schedule) {
 	var list = $( '<div>', {
@@ -53,6 +54,13 @@ function buildOption(boat) {
 	return '<option value="' + boat.id + '" pl="' + boat.parking_lot + '">' + boat.name + '</option>';
 }
 
+function logout() {
+	$.removeCookie( 'token-auth' );
+	$.removeCookie( 'user-info' );
+	document.location.href = '/login.html';
+	//window.location.replace( hostURL+'/login.html' );
+}
+
 function getUserCookie() {
 	if ( $.cookie( 'user-info' ) ) {
 		return $.cookie( 'user-info' );
@@ -77,7 +85,8 @@ function getUserCookie() {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -109,7 +118,8 @@ function getUserSchedule(domId) {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -148,7 +158,8 @@ function deleteScheduledAction( domId, href ) {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
@@ -179,7 +190,8 @@ function getUserBoats(domId) {
 		statusCode: {
 						401: function() {
 							$.removeCookie( 'token-auth' );
-							window.location.replace( hostURL+'/login.html' );
+							document.location.href = '/login.html';
+							//window.location.replace( hostURL+'/login.html' );
 						}
 					}
 	});
