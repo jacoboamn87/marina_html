@@ -1,0 +1,111 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+font-family: Swiss LtBt;
+src: url("swissl.ttf");
+}
+@font-face {
+font-family: Swiss ThBt;
+src: url("SWZ721T.TTF");
+}
+html{
+  height: 100%;
+}
+body {
+	min-height: 100%;
+	background-color: #2a2a38;  
+}
+body{
+  font-family: Swiss LtBt;
+}
+#content{
+
+}
+.top_logo{
+	margin-left: auto;
+	margin-right: auto;
+}
+.top_logo_row{
+	text-align: center;
+	margin-top: 120px;
+}
+.top_message_row{
+	text-align: center;
+	margin-top: 60px;
+	margin-bottom: 15px;
+	color: #4b4b60;
+	font-size: 30px;
+	font-family: Swiss ThBt;
+}
+.content_login_row{
+	text-align: center;
+	margin-top: 80px;
+
+}
+.input_email, .input_pass, input, select{
+	width: 80%;
+	max-width: 400px;
+	margin-bottom: 20px;
+	background-color: #2a2a38;
+	height: 80px;
+	border: 2px #4b4b60 solid;
+	border-radius: 10px;
+	padding-left: 60px;
+	font-size: 20px;
+	font-weight: bolder;
+}
+.input_email:focus, .input_pass:focus{
+	width: 80%;
+	max-width: 400px;
+	margin-bottom: 20px;
+	background-color: #2a2a38;
+	height: 80px;
+	border: 2px #0094be solid;
+	border-radius: 10px;
+}
+.login_button{
+	width: 250px;
+	height: 60px;
+	font-size: 20px;
+	background: -webkit-linear-gradient(90deg, #fbb03b, #f5d919); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(90deg, #fbb03b, #f5d919); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(90deg, #fbb03b, #f5d919); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(90deg, #fbb03b, #f5d919); /* Standard syntax (must be last) */
+	border: none;
+	border-radius: 10px;
+	color: #666666;
+}
+.olvido_url{
+	margin-top: 10px;
+}
+.olvido_url a{
+	color: #0094be;
+	font-size: 16px;
+}
+#footer,.boton_solicitud{
+	text-align: center;
+	bottom: 0px;
+	color:  #4b4b60;
+	padding-top: 15px;
+}
+
+
+
+
+
+
+/* ANDRES */
+
+
+.nombre-bote{
+	font-weight: bold;
+	
+}
+
+.cancel-schedule{
+	float: right;
+}
+
+.fecha-bote{
+	padding-left: 15px;
+}
