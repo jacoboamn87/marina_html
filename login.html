@@ -3,7 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>HMPE : Login</title>		<link rel="stylesheet" href="css/bootstrap.css">
+		<title>HMPE : Login</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
 		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
@@ -20,21 +21,16 @@
 		</div>
 		<div class="container" id="content">
 			<div class="row content_login_row">
-				<form id="login-form" action="login">
-					<div id="inputs" class="input">
-						<div>
-							<input type="mail" placeholder="Usuario" class="input_email" name="username">
-						</div>
-						<div>
-							<input type="password" placeholder="Contraseña" class="input_pass" name="password">
-						</div>
-						<div>
-							<button class="login_button">ENTRAR</button>
-						</div>
+				<form id="login-form" class="col-md-6 col-md-offset-3" action="login">
+
+						<input type="mail" placeholder="Usuario" class="input_email form-control" name="username">
+						<input type="password" placeholder="Contraseña" class="input_pass form-control" name="password">
+						<button class="login_button  btn btn-default">ENTRAR</button>
+
 						<div class="olvido_url">
 							<a href="olvido.html">Olvidaste la contraseña</a>
 						</div>
-					</div>
+
 				</form>
 			</div>
 		</div>
@@ -100,7 +96,7 @@
 				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
 
 				getUserInfo();
-				
+
 				document.location.href = '/schedule.html';
 			});
 
