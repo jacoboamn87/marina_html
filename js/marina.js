@@ -66,11 +66,7 @@ function verifyAuth() {
 	}
 }
 
-function getUserCookie() {
-	if ( $.cookie( 'user-info' ) ) {
-		return $.cookie( 'user-info' );
-	}
-
+function getUserInfo() {
 	// variable to hold request
 	var request;
 

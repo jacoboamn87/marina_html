@@ -46,18 +46,16 @@
 		$( document ).on( 'ready', function() {
 			verifyAuth();
 
-			//getUserCookie();
-
 			getUserSchedule( 'schedule-container' );
 		});
 
 		$( document ).on( 'click', 'a.cancel-schedule', function( event ) {
 			event.preventDefault();
 
-			deleteScheduledAction( $(this).attr('id'), $(this).attr('href'), $(this).attr('sch') );
+			deleteScheduledAction( $( this ).attr( 'id' ), $( this ).attr( 'href' ), $( this ).attr( 'sch' ) );
 		});
 
-		$( '#newsch' ).on('click', function(event) {
+		$( '#newsch' ).on( 'click', function( event ) {
 			document.location.href = '/newschedule.html';
 		});		
 	</script>

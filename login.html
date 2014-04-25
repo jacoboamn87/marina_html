@@ -98,6 +98,9 @@
 			request.done(function (response, textStatus, jqXHR){
 				// Set the authorization cookie
 				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
+
+				getUserInfo();
+				
 				document.location.href = '/schedule.html';
 			});
 
