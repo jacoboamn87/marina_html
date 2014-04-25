@@ -79,6 +79,7 @@ input:focus{
 	background-color: #2a2a38;
 		background: transparent;
 	border: 1px #0094be solid;
+	box-shadow: none;
 
 }
 .login_button{
@@ -88,7 +89,9 @@ input:focus{
 	background: -webkit-linear-gradient(#ffdd00 0%, #ffb401 100%);
 	border: none;
 	border-radius: 6px; 
-	color: #666666;
+	color: #666666;	
+	padding-left: 35px; 
+	padding-right: 35px;
 }
 .olvido_url{
 	margin-top: 10px;
@@ -104,11 +107,26 @@ input:focus{
 	padding-top: 15px;
 }
 
-select{
-	text-align: white;
+select.form-control {
+	text-align: center;
+	color: #fff;
 	width: 100%;
+	background: none !important;
+	background-color: transparent !important; 
 }
+.reservar_button{
+	color: #ffb401;
+	border-color: #ffb401;
+	background: #171929;
+	max-width: 250px;
+	padding-left: 35px; 
+	padding-right: 35px;
+}
+.reservar_button.active, .reservar_button:hover, .reservar_button:focus {
+background: #0c0e19;
+	color: #ffb401;
 
+}
 
 
 
