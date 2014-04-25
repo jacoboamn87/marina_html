@@ -51,9 +51,7 @@
 	<script src="js/marina.js"></script>
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
-			if ( !$.cookie( 'token-auth' ) ) {
-				window.location.replace( hostURL+'/login.html'  );
-			}
+			verifyAuthentication()
 
 			getUserBoats('boats');
 
@@ -105,15 +103,14 @@
 									$( '#inputs' ).parent().prepend( '<div class="error">La información que ha introducido es inválida</div>' )
 								},
 								401: function() {
-									$.removeCookie( 'token-auth' );
-									window.location.replace( hostURL+'/login.html' );
+									logout();
 								}
 							}
 			});
 
 			// callback handler that will be called on success
 			request.done(function (response, textStatus, jqXHR){
-				window.location.replace( hostURL+'/schedule.html' );
+				document.location.href = '/schedule.html';
 			});
 
 			// callback handler that will be called regardless

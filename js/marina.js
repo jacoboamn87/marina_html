@@ -1,6 +1,6 @@
 
-var apiURL  = 'http://marina.andresazp.webfactional.com';
-// var hostURL = 'http://hmpe.andresazp.webfactional.com';
+//var apiURL  = 'http://marina.andresazp.webfactional.com';
+var apiURL  = 'http://127.0.0.1:8000';
 
 function buildScheduleList(schedule) {
 	var list = $( '<div>', {
@@ -58,7 +58,12 @@ function logout() {
 	$.removeCookie( 'token-auth' );
 	$.removeCookie( 'user-info' );
 	document.location.href = '/login.html';
-	//window.location.replace( hostURL+'/login.html' );
+}
+
+function verifyAuthentication() {
+	if ( !$.cookie( 'token-auth' ) ) {
+		document.location.href = '/login.html';
+	}
 }
 
 function getUserCookie() {
@@ -84,9 +89,7 @@ function getUserCookie() {
 		headers: 	{ Authorization : $.cookie( 'token-auth' ) },
 		statusCode: {
 						401: function() {
-							$.removeCookie( 'token-auth' );
-							document.location.href = '/login.html';
-							//window.location.replace( hostURL+'/login.html' );
+							logout();
 						}
 					}
 	});
@@ -117,9 +120,7 @@ function getUserSchedule(domId) {
 		headers: 	{ Authorization : $.cookie( 'token-auth' ) },
 		statusCode: {
 						401: function() {
-							$.removeCookie( 'token-auth' );
-							document.location.href = '/login.html';
-							//window.location.replace( hostURL+'/login.html' );
+							logout();
 						}
 					}
 	});
@@ -157,9 +158,7 @@ function deleteScheduledAction( domId, href ) {
 		headers: 	{ Authorization : $.cookie( 'token-auth' ) },
 		statusCode: {
 						401: function() {
-							$.removeCookie( 'token-auth' );
-							document.location.href = '/login.html';
-							//window.location.replace( hostURL+'/login.html' );
+							logout();
 						}
 					}
 	});
@@ -189,9 +188,7 @@ function getUserBoats(domId) {
 		headers: 	{ Authorization : $.cookie( 'token-auth' ) },
 		statusCode: {
 						401: function() {
-							$.removeCookie( 'token-auth' );
-							document.location.href = '/login.html';
-							//window.location.replace( hostURL+'/login.html' );
+							logout();
 						}
 					}
 	});

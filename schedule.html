@@ -44,9 +44,7 @@
 	<script src="js/marina.js"></script>
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
-			if ( !$.cookie( 'token-auth' ) ) {
-				window.location.replace( hostURL+'/login.html'  );
-			}
+			verifyAuthentication()
 
 			getUserCookie();
 
@@ -60,7 +58,7 @@
 		});
 
 		$( '#newsch' ).on('click', function(event) {
-			window.location.replace( hostURL+'/newschedule.html' );
+			document.location.href = '/newschedule.html';
 		});		
 	</script>
 	</body>
