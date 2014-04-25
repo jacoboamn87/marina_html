@@ -127,8 +127,8 @@ function getUserSchedule(domId) {
 
 	// callback handler that will be called on success
 	request.done( function ( response, textStatus, jqXHR ) {
-		var html = buildScheduleList(response);
-		$( '#'+domId ).append(html);
+		var html = buildScheduleList( response );
+		$( '#'+domId ).append( html );
 	});
 
 	// callback handler that will be called regardless
