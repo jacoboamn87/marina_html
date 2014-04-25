@@ -1,3 +1,5 @@
+/* @override http://hmpe.andresazp.webfactional.com/css/main.css */
+
 @charset "utf-8";
 /* CSS Document */
 @font-face {
@@ -13,7 +15,7 @@ html{
 }
 body {
 	min-height: 100%;
-	background-color: #2a2a38;  
+	background-color:#282437 ;  
 }
 body{
   font-family: Swiss LtBt;
@@ -21,9 +23,16 @@ body{
 #content{
 
 }
-.top_logo{
-	margin-left: auto;
-	margin-right: auto;
+
+.top_logo_row{
+}
+img#main-logo{
+	max-width: 480px;
+	padding-left: 30px;
+	padding-right: 30px;
+	margin: auto;
+	width: 100%;
+	
 }
 .top_logo_row{
 	text-align: center;
@@ -31,10 +40,10 @@ body{
 }
 .top_message_row{
 	text-align: center;
-	margin-top: 60px;
-	margin-bottom: 15px;
-	color: #4b4b60;
-	font-size: 30px;
+	margin-top: 25px;
+	margin-bottom: 25px;
+	color: #746a96;
+	font-size: 20px;
 	font-family: Swiss ThBt;
 }
 .content_login_row{
@@ -42,38 +51,47 @@ body{
 	margin-top: 80px;
 
 }
-.input_email, .input_pass, input, select{
-	width: 80%;
-	max-width: 400px;
-	margin-bottom: 20px;
-	background-color: #2a2a38;
-	height: 80px;
-	border: 2px #4b4b60 solid;
-	border-radius: 10px;
-	padding-left: 60px;
-	font-size: 20px;
-	font-weight: bolder;
+
+
+
+.btn, .login_button{
+	padding-left: 25px;
+	padding-right: 25px;
+	border-radius: 7px;
 }
-.input_email:focus, .input_pass:focus{
-	width: 80%;
-	max-width: 400px;
+
+
+.input_email, .input_pass, input, select, input.form-control{
+
+	margin-bottom: 20px;
+	height: 40px;
+	border: 1px #4b4b60 solid;
+	border-radius: 7px;
+	padding-left:  60px;
+	font-size: 16px;
+	font-weight: bolder;
+	color: #fff;
+	border-radius: 6px; 
+	background: transparent;
+}
+input:focus{
 	margin-bottom: 20px;
 	background-color: #2a2a38;
-	height: 80px;
-	border: 2px #0094be solid;
-	border-radius: 10px;
+		background: transparent;
+	border: 1px #0094be solid;
+	box-shadow: none;
+
 }
 .login_button{
-	width: 250px;
-	height: 60px;
-	font-size: 20px;
-	background: -webkit-linear-gradient(90deg, #fbb03b, #f5d919); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(90deg, #fbb03b, #f5d919); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(90deg, #fbb03b, #f5d919); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(90deg, #fbb03b, #f5d919); /* Standard syntax (must be last) */
+	max-width: 250px;
+	height: 30px;
+	font-size: 16px;
+	background: -webkit-linear-gradient(#ffdd00 0%, #ffb401 100%);
 	border: none;
-	border-radius: 10px;
-	color: #666666;
+	border-radius: 6px; 
+	color: #666666;	
+	padding-left: 35px; 
+	padding-right: 35px;
 }
 .olvido_url{
 	margin-top: 10px;
@@ -89,7 +107,26 @@ body{
 	padding-top: 15px;
 }
 
+select.form-control {
+	text-align: center;
+	color: #fff;
+	width: 100%;
+	background: none !important;
+	background-color: transparent !important; 
+}
+.reservar_button{
+	color: #ffb401;
+	border-color: #ffb401;
+	background: #171929;
+	max-width: 250px;
+	padding-left: 35px; 
+	padding-right: 35px;
+}
+.reservar_button.active, .reservar_button:hover, .reservar_button:focus {
+background: #0c0e19;
+	color: #ffb401;
 
+}
 
 
 
@@ -103,9 +140,10 @@ body{
 }
 
 .cancel-schedule{
-	float: right;
 }
 
 .fecha-bote{
-	padding-left: 15px;
+		font-size: 0.7em;
+
+
 }

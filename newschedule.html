@@ -2,11 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Documento sin título</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>HMPE : Agendar</title>
+				<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
 		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
-		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
@@ -20,25 +22,19 @@
 		</div>
 		<div class="container" id="content">
 			<div class="row content_login_row">
-				<form id="schedule-form" action="schedule">
+				<form id="schedule-form" class="col-md-6 col-md-offset-3" action="schedule">
 					<div id="inputs" class="input">
-						<div>
-							<select name="action" id="action">
-								<option value="IN">Subir embarcación</option>
-								<option value="OUT">Bajar embarcación</option>
+							<select class="form-control" name="action" id="action">
+								<option value="IN"><span class=" glyphicon  glyphicon-arrow-down"></span> Subir embarcación</option>
+								<option value="OUT"><span class=" glyphicon glyphicon-arrow-down"></span> Bajar embarcación</option>
 							</select>
-						</div>
-						<div>
-							<select name="boat"  id="boats"></select>
+							<select  class="form-control" name="boat"  id="boats"></select>
 							<input type="hidden" name="parking_lot" />
 							<input type="hidden" name="user" />
-						</div>
-						<div>
-							<input type="datetime" placeholder="Fecha y hora" name="action_date">
-						</div>
-						<div>
-							<button class="login_button">RESERVAR</button>
-						</div>
+
+							<input type="datetime-local" class="form-control" placeholder="Fecha y hora" name="action_date">
+
+							<button class="reservar_button  btn">RESERVAR</button>
 					</div>
 				</form>
 			</div>
@@ -132,3 +128,4 @@
 	</script>
 	</body>
 </html>
+
