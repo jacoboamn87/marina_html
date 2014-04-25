@@ -60,7 +60,7 @@ function logout() {
 	document.location.href = '/login.html';
 }
 
-function verifyAuthentication() {
+function verifyAuth() {
 	if ( !$.cookie( 'token-auth' ) ) {
 		document.location.href = '/login.html';
 	}

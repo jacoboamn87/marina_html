@@ -44,14 +44,14 @@
 	<script src="js/marina.js"></script>
 	<script type="text/javascript">
 		$( document ).on( 'ready', function() {
-			verifyAuthentication()
+			verifyAuthentication();
 
 			getUserCookie();
 
-			getUserSchedule('schedule-container');
+			getUserSchedule( 'schedule-container' );
 		});
 
-		$( document ).on('click', 'a.cancel-schedule', function(event) {
+		$( document ).on( 'click', 'a.cancel-schedule', function( event ) {
 			event.preventDefault();
 
 			deleteScheduledAction( $(this).attr('id'), $(this).attr('href'), $(this).attr('sch') );
