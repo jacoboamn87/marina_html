@@ -1,127 +1,129 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>HMPE : Agendar</title>
-		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
-		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="css/main.css">
-	</head>
-	<body>
-		<div class="container" id="header">
-			<div class="row top_logo_row">
-				<img class="top_logo" src="img/logo.png" width="309" height="57" />
-			</div>
-			<div class="row top_message_row">
-				AGENDAR
-			</div>
-		</div>
-		<div class="container" id="content">
-			<div class="row content_login_row">
-				<form id="schedule-form" class="col-md-6 col-md-offset-3" action="schedule">
-					<div id="inputs" class="input">
-							<select class="form-control" name="action" id="action">
-								<option value="IN"><span class=" glyphicon  glyphicon-arrow-down"></span> Subir embarcación</option>
-								<option value="OUT"><span class=" glyphicon glyphicon-arrow-down"></span> Bajar embarcación</option>
-							</select>
-							<select  class="form-control" name="boat"  id="boats"></select>
-							<input type="hidden" name="parking_lot" />
-							<input type="hidden" name="user" />
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>HMPE : Agendar</title>
+        <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="container" id="header">
+            <div class="row top_logo_row">
+                <img class="top_logo" src="img/logo.png" width="309" height="57" />
+            </div>
+            <div class="row top_message_row">
+                AGENDAR
+            </div>
+        </div>
+        <div class="container" id="content">
+            <div class="row content_login_row">
+                <form id="schedule-form" class="col-md-6 col-md-offset-3" action="schedule">
+                    <div id="inputs" class="input">
+                            <select class="form-control" name="action" id="action">
+                                <option value="IN"><span class=" glyphicon  glyphicon-arrow-down"></span> Subir embarcación</option>
+                                <option value="OUT"><span class=" glyphicon glyphicon-arrow-down"></span> Bajar embarcación</option>
+                            </select>
+                            <select  class="form-control" name="boat"  id="boats"></select>
+                            <input type="hidden" name="parking_lot" />
+                            <input type="hidden" name="user" />
 
-							<input type="datetime" class="form-control" placeholder="Fecha y hora" name="action_date">
+                            <input type="date" class="form-control" placeholder="Fecha" name="action_date" required>
+                            <input type="time" class="form-control" placeholder="Hora" name="action_time" required>
 
-							<button class="reservar_button  btn">RESERVAR</button>
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="container" id="footer">
-			<div class="row" id="footer_row">
-				J-40194581-3
-			</div>
-		</div>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.serialize-object.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<script src="js/marina.js"></script>
-	<script type="text/javascript">
-		$( document ).on( 'ready', function() {
-			verifyAuth();
+                            <button class="reservar_button  btn">RESERVAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" id="footer">
+            <div class="row" id="footer_row">
+                J-40194581-3
+            </div>
+        </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.serialize-object.min.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+    <script src="js/marina.js"></script>
+    <script type="text/javascript">
+        $( document ).on( 'ready', function() {
+            verifyAuth();
 
-			getUserBoats('boats');
+            getUserBoats('boats');
 
-			var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+            var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
 
-			$( 'input[name="user"]' ).val( userinfo.id );
+            $( 'input[name="user"]' ).val( userinfo.id );
 
-			$( '#boats' ).on( 'change', function (e) {
-				var optionSelected = $( this ).find('option:selected');
-				$( 'input[name="parking_lot"]' ).val( optionSelected.attr('pl') );
-			});
-		});
+            $( '#boats' ).on( 'change', function (e) {
+                var optionSelected = $( this ).find('option:selected');
+                $( 'input[name="parking_lot"]' ).val( optionSelected.attr('pl') );
+            });
+        });
 
-		// bind to the submit event of our form
-		$( '#schedule-form' ).on( 'submit', function( event ) {
-			// prevent default posting of form
-			event.preventDefault();
+        // bind to the submit event of our form
+        $( '#schedule-form' ).on( 'submit', function( event ) {
+            // prevent default posting of form
+            event.preventDefault();
 
-			// setup some local variables
-			var $form = $(this);
-			// let's select and cache all the fields
-			var $inputs = $form.find('input,select');
-			// serialize the data in the form
-			var serializedData = $form.serialize();
+            // setup some local variables
+            var $form = $(this);
+            // let's select and cache all the fields
+            var $inputs = $form.find('input,select');
+            // serialize the data in the form
+            var serializedData = $form.serialize();
 
-			// let's disable the inputs for the duration of the ajax request
-			// Note: we disable elements AFTER the form data has been serialized.
-			// Disabled form elements will not be serialized.
-			$inputs.prop('disabled', true);
+            // let's disable the inputs for the duration of the ajax request
+            // Note: we disable elements AFTER the form data has been serialized.
+            // Disabled form elements will not be serialized.
+            $inputs.prop('disabled', true);
 
-			// variable to hold request
-			var request;
+            // variable to hold request
+            var request;
 
-			// abort any pending request
-			if (request) {
-				request.abort();
-			}
+            // abort any pending request
+            if (request) {
+                request.abort();
+            }
 
-			// fire off the request
-			request = $.ajax({
-				url: 		apiURL+'/api/user/schedule',
-				type: 		'post',
-				data: 		serializedData,
-				dataType: 	'json',
-				headers: 	{ Authorization : $.cookie( 'token-auth' ) },
-				xhrFields: 	{ withCredentials: false },
-				statusCode: {
-								400: function() {
-									$( '#inputs' ).parent().prepend( '<div class="error">La información que ha introducido es inválida</div>' )
-								},
-								401: function() {
-									logout();
-								}
-							}
-			});
+            // fire off the request
+            request = $.ajax({
+                url:        apiURL+'/api/user/schedule',
+                type:       'post',
+                data:       serializedData,
+                dataType:   'json',
+                headers:    { Authorization : $.cookie( 'token-auth' ) },
+                xhrFields:  { withCredentials: false },
+                statusCode: {
+                                400: function() {
+                                    $( '#inputs' ).parent().prepend( '<div class="error">La información que ha introducido es inválida</div>' )
+                                },
+                                401: function() {
+                                    logout();
+                                }
+                            }
+            });
 
-			// callback handler that will be called on success
-			request.done(function (response, textStatus, jqXHR){
-				document.location.href = '/schedule.html';
-			});
+            // callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR){
+                document.location.href = '/schedule.html';
+            });
 
-			// callback handler that will be called regardless
-			// if the request failed or succeeded
-			request.always(function () {
-				// reenable the inputs
-				$inputs.prop('disabled', false);
-				$( '.error' ).remove();
-			});
-		});
-		
-	</script>
-	</body>
+            // callback handler that will be called regardless
+            // if the request failed or succeeded
+            request.always(function () {
+                // reenable the inputs
+                $inputs.prop('disabled', false);
+                $( '.error' ).remove();
+            });
+        });
+        
+    </script>
+    </body>
 </html>
+
 
