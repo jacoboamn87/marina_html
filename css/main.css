@@ -128,7 +128,11 @@ background: #0c0e19;
 
 }
 
+/* BORIS */
 
+#action, #boats {
+	 height: 40px;
+}
 
 
 /* ANDRES */
