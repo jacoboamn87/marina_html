@@ -131,6 +131,14 @@ function getUserSchedule( domId ) {
         }
     });
 
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
+        }
+    });
+
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
         var html = buildScheduleList( response );
@@ -169,6 +177,14 @@ function deleteScheduledAction( domId, href ) {
         }
     });
 
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
+        }
+    });
+
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
         $( '#'+domId ).parent().remove();
@@ -185,7 +201,8 @@ function retrieveUserInfo() {
     }
 
     // fire off the request
-    request = $.ajax({ 
+    request = $.ajax({
+        async:      false,
         url:        apiURL+'/api/user/info/',
         type:       'get',
         dataType:   'json',
@@ -195,6 +212,14 @@ function retrieveUserInfo() {
             401: function() {
                 logout();
             }
+        }
+    });
+
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
         }
     });
 
@@ -229,6 +254,14 @@ function retrieveUserBoats() {
         }
     });
 
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
+        }
+    });
+
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
         $.cookie.json = true;
@@ -259,6 +292,7 @@ function reserveSchedule( form ){
 
     // fire off the request
     request = $.ajax({
+        async:      false,
         url:        apiURL+'/api/user/schedule',
         type:       'post',
         data:       serializedData,
@@ -274,6 +308,14 @@ function reserveSchedule( form ){
             401: function() {
                 logout();
             }
+        }
+    });
+
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
         }
     });
 
@@ -312,6 +354,14 @@ function retrieveAvailableSchedules( search_params ){
             401: function() {
                 logout();
             }
+        }
+    });
+
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown == '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
         }
     });
 

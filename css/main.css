@@ -57,6 +57,11 @@ img#main-logo{
 	margin-top: 80px;
 
 }
+.login_info_row{
+	text-align: center;
+	margin: 10px 0;
+
+}
 .content_reserva_row{
 	text-align: center;
 	margin-top: 20px;

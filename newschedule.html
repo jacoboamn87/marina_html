@@ -3,18 +3,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
         <title>HMPE : Agendar</title>
-        <!-- <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css"> -->
-        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+        
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <div class="go_back">
             <a href="/desk.html">
-                <span class="fa-arrow-left"></span>
+                <span class="glyphicon glyphicon-arrow-left"></span>
             </a>
         </div>
         <div class="container" id="header">
@@ -53,6 +54,11 @@
                 </form>
             </div>
         </div>
+        <div class="container" id="footer">
+            <div class="row" id="footer_row">
+                J-40194581-3
+            </div>
+        </div>
         <!-- Modal de espera -->
         <div id="wait-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
             <div class="modal-dialog modal-sm">
@@ -81,11 +87,28 @@
             </div>
         </div>
         <!-- Fin modal de submit -->
-        <div class="container" id="footer">
-            <div class="row" id="footer_row">
-                J-40194581-3
+        <!-- Modal de error de conexión -->
+        <div id="connection-error-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="waitModal">Esto es extraño...</h4>
+                    </div>
+                    <div class="modal-body">
+                        En estos momentos no se ha podido establecer conexión con el servidor.
+                        <br/>
+                        Por favor, intente nuevamente más tarde.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- Fin modal de error de conexión -->
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/moment.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -100,18 +123,23 @@
                 $( '#wait-modal' ).modal({
                     show: true
                 });
+                $( '#connection-error-modal' ).modal({
+                    show: false
+                });
 
                 /**
                  * Load the initial data
                  */
-                $( '#datepicker' ).val( todaysDate() );
+                var today = todaysDate();
+
+                $( '#datepicker' ).val( today );
 
                 $('#datepicker').datetimepicker({
-                    minDate : todaysDate(),
+                    minDate : today,
                     pickTime: false
                 });
 
-                if ( typeof $.cookie( 'user-info' ) === 'undefined' ) {
+                if ( ! $.cookie( 'user-info' ) ) {
                     retrieveUserInfo();
                 }
 
@@ -119,7 +147,7 @@
 
                 $( 'input[name="user"]' ).val( userinfo.id );
 
-                if ( typeof $.cookie( 'user-boats' ) === 'undefined' ) {
+                if ( ! $.cookie( 'user-boats' ) ) {
                     retrieveUserBoats();
                 }
 
@@ -133,7 +161,7 @@
 
                 $( '#schedule' ).html( buildScheduleOptions( availableOptions ) );
 
-                $( '#wait-modal' ).modal( 'toggle' );
+                $( '#wait-modal' ).modal( 'hide' );
             });
 
             $( '#boats' ).on( 'change', function ( event ) {
@@ -173,7 +201,66 @@
             $( '#schedule-form' ).on( 'submit', function( event ) {
                 // prevent default posting of form
                 event.preventDefault();
-                alert('ANTES');
+
+                // setup some local variables
+                var $form = $( this );
+                // let's select and cache all the fields
+                var $inputs = $form.find('input');
+                // serialize the data in the form
+                var serializedData = $form.serialize();
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                // Disabled form elements will not be serialized.
+                $inputs.prop('disabled', true);
+
+                // variable to hold request
+                var request;
+
+                // abort any pending request
+                if (request) {
+                    request.abort();
+                }
+
+                URL = apiURL+'/api/user/schedule/<pk>/reserve/'
+
+                // fire off the request
+                request = $.ajax({
+                    url:        URL.replace('<pk>', serializedData.schedule),
+                    type:       'post',
+                    data:       serializedData,
+                    dataType:   'json',
+                    xhrFields:  { withCredentials: false },
+                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    statusCode: {
+                        401: function() {
+                            logout();
+                        }
+                    }
+                });
+
+                // callback handler that will be called on fail
+                request.fail( function( jqXHR, textStatus, errorThrown ) {
+                    if ( errorThrown == '' ) {
+                        $( '#connection-error-modal' ).modal( 'toggle' );
+                    }
+                });
+
+                // callback handler that will be called on success
+                request.done(function (response, textStatus, jqXHR){
+                    // Set the authorization cookie
+                    $.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
+                    
+                    document.location.href = '/desk.html';
+                });
+
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop('disabled', false);
+                    $( '.error-msg' ).remove();
+                });
             });
         </script>
     </body>

@@ -6,7 +6,6 @@
         <title>HMPE : Ingresar</title>
         <link rel="stylesheet" href="/css/bootstrap.css">
         <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
         <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
         <link rel="stylesheet" href="/css/main.css">
     </head>
@@ -26,9 +25,17 @@
                         <input type="password" placeholder="Contraseña" class="input_pass form-control" name="password">
                         <button class="login_button  btn btn-default">ENTRAR</button>
                         <div class="olvido_url">
-                            <a href="olvido.html">Olvidaste la contraseña</a>
+                            <a href="olvido.html">&iquest;Olvid&oacute; su contrase&ntilde;a?</a>
                         </div>
                 </form>
+            </div>
+            <div class="row login_info_row">
+                <div class="desk">
+                    &iquest;Necesita alguna informaci&oacute;n?
+                </div>
+                <a href="contact.html" class="ir_reservar">
+                    <div id="contact" class="login_button btn btn-default">CONTACTOS</div>
+                </a>
             </div>
         </div>
         <div class="container" id="footer">
@@ -36,6 +43,28 @@
                 J-40194581-3
             </div>
         </div>
+        <!-- Modal de error de conexión -->
+        <div id="connection-error-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="waitModal">Esto es extraño...</h4>
+                    </div>
+                    <div class="modal-body">
+                        En estos momentos no se ha podido establecer conexión con el servidor.
+                        <br/>
+                        Por favor, intente nuevamente más tarde.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal de error de conexión -->
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/js/jquery.serialize-object.min.js"></script>
@@ -47,6 +76,10 @@
                     document.location.href = '/desk.html';
                 };
             });
+
+            $( '#connection-error-modal' ).modal({
+                    show: false
+                });
 
             // bind to the submit event of our form
             $( '#login-form' ).on( 'submit', function( event ) {
@@ -88,6 +121,13 @@
                                 '</div>'
                             );
                         }
+                    }
+                });
+
+                // callback handler that will be called on fail
+                request.fail( function( jqXHR, textStatus, errorThrown ) {
+                    if ( errorThrown != 'BAD REQUEST' ) {
+                        $( '#connection-error-modal' ).modal( 'open' );
                     }
                 });
 

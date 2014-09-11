@@ -3,62 +3,61 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
 		<title>HMPE : Agenda</title>
+		
 		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
 		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
 		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
+		<div class="go_back">
+            <a href="/desk.html">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+            </a>
+        </div>
 		<div class="container" id="header">
-			<div  class="row top_logo_row">
-				<img id="main-logo" class="top_logo" src="img/logo.png"/>
-			</div>
-			<div class="row top_message_row">
-				AGENDA
-			</div>
-		</div>
+            <div class="row top_logo_row_inner">
+                <img id="main-logo" class="top_logo" src="/img/logo.png">
+            </div>
+            <div class="row top_message_row">
+                AGENDA
+            </div>
+        </div>
 		<!-- Content -->
 		<div class="container" id="content">
 			<div class="row"><div id="schedule-container" class="col-md-6 col-md-offset-3"></div></div>
 		</div>
 		<!-- Boton -->
-		<div class="container">
-			<div class="boton_solicitud">
-				<button id="newsch" class="login_button btn btn-default">RESERVAR</button>
-			</div>
+		<div class="container text-center">
+			<a href="newschedule.html" class="ir_reservar">
+                <div id="newsch" class="login_button btn btn-default">RESERVAR</div>
+            </a>
 		</div>
 		<!-- Footer -->
 		<div class="container" id="footer">
-					<div class="row">
-				<a class="logout" href="#" onclick="logout()">Cerrar Sesión</a>
-			</div>
 			<div class="row" id="footer_row">
 				J-40194581-3
 			</div>
 		</div>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.serialize-object.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<script src="js/marina.js"></script>
-	<script type="text/javascript">
-		$( document ).on( 'ready', function() {
-			verifyAuth();
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.serialize-object.min.js"></script>
+		<script src="js/jquery.cookie.js"></script>
+		<script src="js/marina.js"></script>
+		<script type="text/javascript">
+			$( document ).on( 'ready', function() {
+				verifyAuth();
 
-			getUserSchedule( 'schedule-container' );
-		});
+				getUserSchedule( 'schedule-container' );
+			});
 
-		$( document ).on( 'click', 'a.cancel-schedule', function( event ) {
-			event.preventDefault();
+			$( document ).on( 'click', 'a.cancel-schedule', function( event ) {
+				event.preventDefault();
 
-			deleteScheduledAction( $( this ).attr( 'id' ), $( this ).attr( 'href' ), $( this ).attr( 'sch' ) );
-		});
-
-		$( '#newsch' ).on( 'click', function( event ) {
-			document.location.href = '/newschedule.html';
-		});		
-	</script>
+				deleteScheduledAction( $( this ).attr( 'id' ), $( this ).attr( 'href' ), $( this ).attr( 'sch' ) );
+			});
+		</script>
 	</body>
 </html>
