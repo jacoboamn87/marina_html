@@ -1,13 +1,30 @@
 
-var apiURL  = 'http://marina.andresazp.webfactional.com';
-//var apiURL  = 'http://127.0.0.1:8000';
+//var apiURL  = 'http://marina.andresazp.webfactional.com';
+var apiURL  = 'http://127.0.0.1:8000';
+
+/**
+ * jQuery Cookie Plugin 
+ * 
+ * By default the cookie value is encoded/decoded when writing/reading,
+ * using encodeURIComponent/decodeURIComponent. Bypass this by setting raw to true:
+ */
+$.cookie.raw = true;
 
 function todaysDate(){
-    var fullDate = new Date();console.log(fullDate);
-    var twoDigitMonth = fullDate.getMonth()+"";if(twoDigitMonth.length==1)  twoDigitMonth="0" +twoDigitMonth;
-    var twoDigitDate = fullDate.getDate()+"";if(twoDigitDate.length==1) twoDigitDate="0" +twoDigitDate;
+    var fullDate = new Date();
+    var twoDigitMonth = (fullDate.getMonth()+1)+"";
+    
+    if( twoDigitMonth.length==1 ) {
+        twoDigitMonth="0" +twoDigitMonth;
+    }
 
-    return twoDigitMonth +'/'+ twoDigitDate +'/'+ fullDate.getFullYear();
+    var twoDigitDate = fullDate.getDate()+"";
+
+    if( twoDigitDate.length==1 ) {
+        twoDigitDate="0" +twoDigitDate;
+    }
+
+    return twoDigitDate +'-'+ twoDigitMonth +'-'+ fullDate.getFullYear();
 }
 
 function buildScheduleList( schedule ) {
@@ -42,11 +59,11 @@ function buildScheduleRow( it ) {
     return item
 }
 
-function buildBoatsOptions(boats) {
+function buildBoatsOptions( boats ) {
     var options = '';
 
-    $.each(boats, function(index, boat) {
-         options += buildOption(boat);
+    $.each(boats, function( index, boat ) {
+         options += buildOption( boat );
 
          if ( index == 0 ) {
             $( 'input[name="parking_lot"]' ).val( boat.parking_slot.parking_lot );
@@ -60,6 +77,24 @@ function buildOption( boat ) {
     return '<option value="' + boat.id + '" pl="' + boat.parking_slot.parking_lot + '">' + boat.name + '</option>';
 }
 
+function buildScheduleOptions( schedules ) {
+    var options = '';
+
+    $.each(schedules, function( index, schedule ) {
+        options += buildScheduleOption( schedule );
+
+        if ( index == 0 ) {
+            $( 'input[name="schedule"]' ).val( schedule.id );
+         }
+    });
+
+    return options;
+}
+
+function buildScheduleOption( schedule ) {
+    return '<option value="' + schedule.avaible_time + '" schedule="' + schedule.id + '">' + schedule.avaible_time + '</option>';
+}
+
 function logout() {
     $.removeCookie( 'token-auth' );
     $.removeCookie( 'user-info' );
@@ -70,37 +105,6 @@ function verifyAuth() {
     if ( !$.cookie( 'token-auth' ) ) {
         document.location.href = '/login.html';
     }
-}
-
-function getUserInfo() {
-    // variable to hold request
-    var request;
-
-    // abort any pending request
-    if (request) {
-        request.abort();
-    }
-
-    // fire off the request
-    request = $.ajax({
-        async:      false, 
-        url:        apiURL+'/api/user/info',
-        type:       'get',
-        dataType:   'json',
-        xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
-        statusCode: {
-                        401: function() {
-                            logout();
-                        }
-                    }
-    });
-
-    // callback handler that will be called on success
-    request.done( function ( response, textStatus, jqXHR ) {
-        $.cookie.json = true;
-        $.cookie( 'user-info', response );
-    });
 }
 
 function getUserSchedule( domId ) {
@@ -121,10 +125,10 @@ function getUserSchedule( domId ) {
         xhrFields:  { withCredentials: false },
         headers:    { Authorization : $.cookie( 'token-auth' ) },
         statusCode: {
-                        401: function() {
-                            logout();
-                        }
-                    }
+            401: function() {
+                logout();
+            }
+        }
     });
 
     // callback handler that will be called on success
@@ -159,10 +163,10 @@ function deleteScheduledAction( domId, href ) {
         xhrFields:  { withCredentials: false },
         headers:    { Authorization : $.cookie( 'token-auth' ) },
         statusCode: {
-                        401: function() {
-                            logout();
-                        }
-                    }
+            401: function() {
+                logout();
+            }
+        }
     });
 
     // callback handler that will be called on success
@@ -171,7 +175,37 @@ function deleteScheduledAction( domId, href ) {
     });
 }
 
-function getUserBoats(domId) {
+function retrieveUserInfo() {
+    // variable to hold request
+    var request;
+
+    // abort any pending request
+    if (request) {
+        request.abort();
+    }
+
+    // fire off the request
+    request = $.ajax({ 
+        url:        apiURL+'/api/user/info/',
+        type:       'get',
+        dataType:   'json',
+        xhrFields:  { withCredentials: false },
+        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        statusCode: {
+            401: function() {
+                logout();
+            }
+        }
+    });
+
+    // callback handler that will be called on success
+    request.done( function ( response, textStatus, jqXHR ) {
+        $.cookie.json = true;
+        $.cookie( 'user-info', response );
+    });
+}
+
+function retrieveUserBoats() {
     // variable to hold request
     var request;
 
@@ -183,20 +217,107 @@ function getUserBoats(domId) {
     // fire off the request
     request = $.ajax({
         async:      false, 
-        url:        apiURL+'/api/user/boats',
+        url:        apiURL+'/api/user/boats/',
         type:       'get',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
         headers:    { Authorization : $.cookie( 'token-auth' ) },
         statusCode: {
-                        401: function() {
-                            logout();
-                        }
-                    }
+            401: function() {
+                logout();
+            }
+        }
     });
 
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
-        $( '#'+domId ).append(buildBoatsOptions(response));
+        $.cookie.json = true;
+        $.cookie( 'user-boats', response );
+    });
+}
+
+function reserveSchedule( form ){
+    // setup some local variables
+    var $form = $( form );
+    // let's select and cache all the fields
+    var $inputs = $form.find('input,select');
+    // serialize the data in the form
+    var serializedData = $form.serialize();
+
+    // let's disable the inputs for the duration of the ajax request
+    // Note: we disable elements AFTER the form data has been serialized.
+    // Disabled form elements will not be serialized.
+    $inputs.prop('disabled', true);
+
+    // variable to hold request
+    var request;
+
+    // abort any pending request
+    if (request) {
+        request.abort();
+    }
+
+    // fire off the request
+    request = $.ajax({
+        url:        apiURL+'/api/user/schedule',
+        type:       'post',
+        data:       serializedData,
+        dataType:   'json',
+        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        xhrFields:  { withCredentials: false },
+        statusCode: {
+            400: function() {
+                $( '#inputs' ).parent().prepend(
+                    '<div class="error">La información que ha introducido es inválida</div>'
+                );
+            },
+            401: function() {
+                logout();
+            }
+        }
+    });
+
+    // callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+        document.location.href = '/schedule.html';
+    });
+
+    // callback handler that will be called regardless
+    // if the request failed or succeeded
+    request.always(function () {
+        // reenable the inputs
+        $inputs.prop('disabled', false);
+        $( '.error' ).remove();
+    });
+}
+
+function retrieveAvailableSchedules( search_params ){
+    // variable to hold request
+    var request;
+
+    // abort any pending request
+    if (request) {
+        request.abort();
+    }
+
+    // fire off the request
+    request = $.ajax({
+        async:      false, 
+        url:        apiURL + '/api/user/schedule/availability/?' + search_params,
+        type:       'get',
+        dataType:   'json',
+        xhrFields:  { withCredentials: false },
+        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        statusCode: {
+            401: function() {
+                logout();
+            }
+        }
+    });
+
+    // callback handler that will be called on success
+    request.done( function ( response, textStatus, jqXHR ) {
+        $.cookie.json = true;
+        $.cookie( 'available-schedules', response );
     });
 }

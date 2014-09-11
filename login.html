@@ -1,113 +1,113 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>HMPE : Login</title>
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
-		<link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
-		<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
-		<link rel="stylesheet" href="css/main.css">
-	</head>
-	<body>
-		<div class="container" id="header">
-			<div  class="row top_logo_row">
-				<img id="main-logo" class="top_logo" src="img/logo.png"/>
-			</div>
-			<div class="row top_message_row">
-				BIENVENIDO
-			</div>
-		</div>
-		<div class="container" id="content">
-			<div class="row content_login_row">
-				<form id="login-form" class="col-md-6 col-md-offset-3" action="login">
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>HMPE : Ingresar</title>
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+        <div class="container" id="header">
+            <div  class="row top_logo_row">
+                <img id="main-logo" class="top_logo" src="img/logo.png"/>
+            </div>
+            <div class="row top_message_row">
+                BIENVENIDO
+            </div>
+        </div>
+        <div class="container" id="content">
+            <div class="row content_login_row">
+                <form id="login-form" class="col-md-6 col-md-offset-3" action="login">
+                        <input type="mail" placeholder="Usuario" class="input_email form-control" name="username">
+                        <input type="password" placeholder="Contraseña" class="input_pass form-control" name="password">
+                        <button class="login_button  btn btn-default">ENTRAR</button>
+                        <div class="olvido_url">
+                            <a href="olvido.html">Olvidaste la contraseña</a>
+                        </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" id="footer">
+            <div class="row" id="footer_row">
+                J-40194581-3
+            </div>
+        </div>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.serialize-object.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/js/marina.js"></script>
+        <script type="text/javascript">
+            $( document ).on( 'ready', function() {
+                if ( $.cookie( 'token-auth' ) ) {
+                    document.location.href = '/desk.html';
+                };
+            });
 
-						<input type="mail" placeholder="Usuario" class="input_email form-control" name="username">
-						<input type="password" placeholder="Contraseña" class="input_pass form-control" name="password">
-						<button class="login_button  btn btn-default">ENTRAR</button>
+            // bind to the submit event of our form
+            $( '#login-form' ).on( 'submit', function( event ) {
+                // prevent default posting of form
+                event.preventDefault();
 
-						<div class="olvido_url">
-							<a href="olvido.html">Olvidaste la contraseña</a>
-						</div>
+                // setup some local variables
+                var $form = $(this);
+                // let's select and cache all the fields
+                var $inputs = $form.find('input');
+                // serialize the data in the form
+                var serializedData = $form.serialize();
 
-				</form>
-			</div>
-		</div>
-		<div class="container" id="footer">
-			<div class="row" id="footer_row">
-				J-40194581-3
-			</div>
-		</div>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.serialize-object.min.js"></script>
-	<script src="js/jquery.cookie.js"></script>
-	<script src="js/marina.js"></script>
-	<script type="text/javascript">
-		$( document ).on( 'ready', function() {
-			if ( $.cookie( 'token-auth' ) ) {
-				document.location.href = '/schedule.html';
-			};
-		});
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                // Disabled form elements will not be serialized.
+                $inputs.prop('disabled', true);
 
-		// bind to the submit event of our form
-		$( '#login-form' ).on( 'submit', function( event ) {
-			// prevent default posting of form
-			event.preventDefault();
+                // variable to hold request
+                var request;
 
-			// setup some local variables
-			var $form = $(this);
-			// let's select and cache all the fields
-			var $inputs = $form.find('input');
-			// serialize the data in the form
-			var serializedData = $form.serialize();
+                // abort any pending request
+                if (request) {
+                    request.abort();
+                }
 
-			// let's disable the inputs for the duration of the ajax request
-			// Note: we disable elements AFTER the form data has been serialized.
-			// Disabled form elements will not be serialized.
-			$inputs.prop('disabled', true);
+                // fire off the request
+                request = $.ajax({
+                    url:        apiURL+'/api/token-auth/',
+                    type:       'post',
+                    data:       serializedData,
+                    dataType:   'json',
+                    xhrFields:  { withCredentials: false },
+                    statusCode: {
+                        400: function() {
+                            $( '.content_login_row' ).prepend(
+                                '<div class="col-md-6 col-md-offset-3 error-msg">'+
+                                    '<span class="glyphicon glyphicon-remove"></span> Correo electrónico o contraseña inválida.'+
+                                '</div>'
+                            );
+                        }
+                    }
+                });
 
-			// variable to hold request
-			var request;
+                // callback handler that will be called on success
+                request.done(function (response, textStatus, jqXHR){
+                    // Set the authorization cookie
+                    $.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
 
-			// abort any pending request
-			if (request) {
-				request.abort();
-			}
+                    document.location.href = '/desk.html';
+                });
 
-			// fire off the request
-			request = $.ajax({
-				url: 		apiURL+'/api/token-auth/',
-				type: 		'post',
-				data: 		serializedData,
-				dataType: 	'json',
-				xhrFields: 	{ withCredentials: false },
-				statusCode: {
-								400: function() {
-									$( '#inputs' ).parent().prepend( '<div class="error">Correo electrónico o contraseña inválida.</div>' )
-								}
-							}
-			});
-
-			// callback handler that will be called on success
-			request.done(function (response, textStatus, jqXHR){
-				// Set the authorization cookie
-				$.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
-
-				getUserInfo();
-
-				document.location.href = '/schedule.html';
-			});
-
-			// callback handler that will be called regardless
-			// if the request failed or succeeded
-			request.always(function () {
-				// reenable the inputs
-				$inputs.prop('disabled', false);
-				$( '.error' ).remove();
-			});
-		});
-	</script>
-	</body>
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $inputs.prop('disabled', false);
+                    $( '.error-msg' ).remove();
+                });
+            });
+        </script>
+    </body>
 </html>
+

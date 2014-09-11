@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>HMPE : Inicio</title>
+		<link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+        <link rel="stylesheet" href="/css/main.css">
+	</head>
+	<body>
+		<div class="container" id="header">
+			<div class="row top_logo_row_inner">
+				<img id="main-logo" class="top_logo" src="/img/logo.png">
+			</div>
+		</div>
+		<!-- Content -->
+		<div class="container" id="content">
+            <div class="row content_reserva_row">
+                <div class="desk">
+                    Para realizar una reservaci&oacute;n con su embarcaci&oacute;n haga click en:
+                </div>
+                <a href="newschedule.html" class="ir_reservar">
+                    <div id="newsch" class="login_button btn btn-default">RESERVAR</div>
+                </a>
+                <div class="desk">
+                    Para revisar su agenda haga click en:
+                </div>
+                <a href="schedule.html" class="ir_reservar">
+                    <div id="newsch" class="login_button btn btn-default">AGENDA</div>
+                </a>
+                <div class="desk">
+                    Para ver o modificar su perfil haga click en:
+                </div>
+                <a href="profile.html" class="ir_reservar">
+                    <div id="newsch" class="login_button btn btn-default">PERFIL</div>
+                </a>
+                <div class="desk">
+                    Para informaci&oacute;n adicional:
+                </div>
+                <a href="contact.html" class="ir_reservar">
+                    <div id="contact" class="login_button btn btn-default">CONTACTOS</div>
+                </a>
+            </div>
+        </div>
+        <div class="container" id="footer">
+            <div class="row" id="footer_row">
+                J-40194581-3
+            </div>
+        </div>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.serialize-object.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/js/marina.js"></script>
+        <script type="text/javascript">
+            $( document ).on( 'ready', function() {
+                verifyAuth();
+
+                retrieveUserInfo();
+            });
+        </script>
+	</body>
+</html>

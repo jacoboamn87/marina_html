@@ -10,6 +10,12 @@ src: url("swissl.ttf");
 font-family: Swiss ThBt;
 src: url("SWZ721T.TTF");
 }
+@font-face {
+  font-family: FontAwesome;
+  src: url("fontawesome-webfont.eot");
+  font-weight: normal;
+  font-style: normal;
+}
 html{
   height: 100%;
 }
@@ -51,8 +57,11 @@ img#main-logo{
 	margin-top: 80px;
 
 }
+.content_reserva_row{
+	text-align: center;
+	margin-top: 20px;
 
-
+}
 
 .btn, .login_button{
 	padding-left: 25px;
@@ -60,11 +69,9 @@ img#main-logo{
 	border-radius: 7px;
 }
 
-
 .input_email, .input_pass, input, select, input.form-control{
-
 	margin-bottom: 20px;
-	height: 40px;
+	height: 50px;
 	border: 1px #4b4b60 solid;
 	border-radius: 7px;
 	padding-left:  60px;
@@ -74,6 +81,7 @@ img#main-logo{
 	border-radius: 6px; 
 	background: transparent;
 }
+
 input:focus{
 	margin-bottom: 20px;
 	background-color: #2a2a38;
@@ -109,10 +117,13 @@ input:focus{
 
 select.form-control {
 	text-align: center;
-	color: #fff;
+	color: #0094be;
 	width: 100%;
-	background: none !important;
-	background-color: transparent !important; 
+	background: none ;
+	background-color: transparent; 
+	font-size: 16px;
+	font-family: Swiss ThBt;
+	border: #0094be 1px solid;
 }
 .reservar_button{
 	color: #ffb401;
@@ -130,7 +141,7 @@ background: #0c0e19;
 
 /* BORIS */
 
-#action, #boats {
+#action, #boats, #action_time {
 	 height: 40px;
 }
 
@@ -140,14 +151,202 @@ background: #0c0e19;
 
 .nombre-bote{
 	font-weight: bold;
-	
-}
-
-.cancel-schedule{
+	color: #0094be;
+	font-size: 22px;
 }
 
 .fecha-bote{
 		font-size: 0.7em;
 
 
+}
+/* BORIS 2.0 */
+.header-item-reserva{
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	position: relative;
+	display: block;
+	padding: 5px 15px;
+	margin-bottom: -1px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+.cancel-schedule{
+	float: right;
+}
+.btn-cancelar{
+	padding-left: 2px;
+	padding-right: 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	font-size: 16px;
+	margin-right: 10px;
+}
+.body-item-reserva{
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border: 1px solid #403D4B;
+	margin-bottom: 5px;
+}
+.movimiento-embarcacion{
+	padding-top: 10px;
+	padding-bottom: 0px;
+	text-align: center;
+	color: #FFF;
+}
+.movimiento-fecha-label{
+	float: left;
+	color: #FFF;
+	padding-left: 10px;
+	margin-top: 10px;
+}
+.movimiento-fecha-fecha{
+	float: right;
+	padding-right: 10px;
+	font-size: 28px;
+}
+.movimiento-hr{
+	width: 95%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-top: 1px solid #403D4B;
+}
+.movimiento-fecha{
+	display: inline-block;
+	margin-bottom: 5px;
+	width: 100%;
+	color: #428bca;
+}
+.top_logo_row_inner{
+	text-align: center;
+	margin-top: 10px;
+}
+select.form-control {
+	appearance:none;
+	-moz-appearance:none; /* Firefox */
+	-webkit-appearance:none; /* Safari and Chrome */
+	 background: url("../img/select.png") no-repeat right;
+
+}
+select.form-control {
+	background: url("../img/select.png") no-repeat right #fcfcfc; /* Old browsers */
+	background: url("../img/select.png") no-repeat right -moz-linear-gradient(top, #fcfcfc 8%, #f2f2f2 66%, #eaeaea 100%); /* FF3.6+ */
+	background: url("../img/select.png") no-repeat right -webkit-gradient(linear, left top, left bottom, color-stop(8%,#fcfcfc), color-stop(66%,#f2f2f2), color-stop(100%,#eaeaea)); /* Chrome,Safari4+ */
+	background: url("../img/select.png") no-repeat right -webkit-linear-gradient(top, #fcfcfc 8%,#f2f2f2 66%,#eaeaea 100%); /* Chrome10+,Safari5.1+ */
+	background: url("../img/select.png") no-repeat right -o-linear-gradient(top, #fcfcfc 8%,#f2f2f2 66%,#eaeaea 100%); /* Opera 11.10+ */
+	background: url("../img/select.png") no-repeat right -ms-linear-gradient(top, #fcfcfc 8%,#f2f2f2 66%,#eaeaea 100%); /* IE10+ */
+	background: url("../img/select.png") no-repeat right linear-gradient(to bottom, #fcfcfc 8%,#f2f2f2 66%,#eaeaea 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */
+}
+input.form-control, textarea.form-control {
+	color: #0094be;
+	font-size: 30px;
+	font-family: Swiss ThBt;
+	border: none;
+	appearance:none;
+	-moz-appearance:none; /* Firefox */
+	-webkit-appearance:none; /* Safari and Chrome */
+	padding-left: 0px;
+	text-align: center;
+	background: #fff;
+}
+textarea.form-control{
+	resize: none;
+}
+#inputs{
+	color: #FFF;
+	font-size: 22px;
+	font-family: Swiss ThBt;
+}
+input.input_contacto{
+	font-size: 22px;
+	color: #0094be;
+	border: #0094be 1px solid;
+}
+.form-control[disabled] {
+cursor: not-allowed;
+background-color: transparent;
+opacity: 1;
+}
+.siguenos{
+	color: #ffb401;
+	font-size: 16px;
+	font-family: Swiss ThBt;
+}
+.go_back{
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	font-size: 16px;
+	color: #746a96;
+	font-family: FontAwesome;
+}
+.top_message_row {
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 0px;
+	color: #746a96;
+	font-size: 22px;
+	font-family: Swiss ThBt;
+}
+.content_reserva_row {
+	text-align: center;
+	margin-top: 10px;
+}
+input.email_contacto{
+	font-size: 16px;
+	color: #FFF;
+	font-weight: normal;
+}
+.fb_m, .tw_m, .ig_m{
+	font-family: FontAwesome;
+	font-size: 30px;
+	display: inline;
+}
+.fb_m{
+	margin-right: 20px;
+}
+.ig_m{
+	margin-left: 20px;
+}
+.info_titulo{
+	text-align: center;
+	margin-top: 25px;
+	margin-bottom: 0px;
+	color: #746a96;
+	font-size: 22px;
+	font-family: Swiss ThBt;
+	font-weight: normal;
+}
+.info_contenido{
+	text-align: justify;
+	margin-top: 15px;
+	margin-bottom: 0px;
+	color: #fff;
+	font-size: 12px;
+	font-family: Swiss ThBt;
+}
+.desk{
+	font-size: 18px;
+	text-align: center;
+	color: #FFF;
+	margin-top: 25px;
+	font-weight: normal;
+}
+.ir_reservar{
+	margin-top: 15px;
+	display: block;
+}
+
+/**
+ * 	JACOBO
+ */
+div.error-msg{
+	font-family: Swiss ThBt;
+	color: #FFF;
+	margin-bottom: 20px;
+	font-weight: bold;
+	font-size: 20px
 }

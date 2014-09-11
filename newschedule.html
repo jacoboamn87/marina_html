@@ -4,125 +4,178 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>HMPE : Agendar</title>
-        <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css">
+        <!-- <link rel="stylesheet" href="http://sscol.jebal.comuv.com/css/font.css"> -->
         <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
+        <div class="go_back">
+            <a href="/desk.html">
+                <span class="fa-arrow-left"></span>
+            </a>
+        </div>
         <div class="container" id="header">
-            <div class="row top_logo_row">
-                <img class="top_logo" src="img/logo.png" width="309" height="57" />
+            <div class="row top_logo_row_inner">
+                <img id="main-logo" class="top_logo" src="/img/logo.png">
             </div>
             <div class="row top_message_row">
                 AGENDAR
             </div>
         </div>
         <div class="container" id="content">
-            <div class="row content_login_row">
+            <div class="row content_reserva_row">
                 <form id="schedule-form" class="col-md-6 col-md-offset-3" action="schedule">
                     <div id="inputs" class="input">
-                            <select class="form-control" name="action" id="action">
-                                <option value="IN"><span class=" glyphicon  glyphicon-arrow-down"></span> Subir embarcación</option>
-                                <option value="OUT"><span class=" glyphicon glyphicon-arrow-down"></span> Bajar embarcación</option>
-                            </select>
-                            <select  class="form-control" name="boat"  id="boats"></select>
-                            <input type="hidden" name="parking_lot" />
-                            <input type="hidden" name="user" />
-
-                            <input type="date" class="form-control" placeholder="Fecha" name="action_date" required>
-                            <input type="time" class="form-control" placeholder="Hora" name="action_time" required>
-
-                            <button class="reservar_button  btn">RESERVAR</button>
+                        <input type="hidden" name="parking_lot" class="schedule-modifier">
+                        <input type="hidden" name="user">
+                        <input type="hidden" name="schedule">
+                        <select class="form-control" name="boat" id="boats">
+                        </select>
+                        <select class="form-control" name="action" id="action">
+                            <option value="IN">Subir embarcación</option>
+                            <option value="OUT">Bajar embarcación</option>
+                        </select>
+                        <span class="glyphicon glyphicon-calendar"></span> Fecha
+                        <input id="datepicker" type="text" class="form-control schedule-modifier" 
+                            placeholder="Fecha" name="action_date" data-date-format="DD-MM-YYYY" required>
+                        <span class="glyphicon glyphicon-time"></span> Hora
+                        <select class="form-control" name="action_time" id="action_time">
+                            <option value="">--:-- --</option>
+                        </select>
+                        <span class="glyphicon glyphicon-paperclip"></span> Comentario
+                        <textarea class="form-control" rows="3" cols="50" name="comment"></textarea>
+                        <br/>
+                        <button class="reservar_button  btn">RESERVAR</button>
                     </div>
                 </form>
             </div>
         </div>
+        <!-- Modal de espera -->
+        <div id="wait-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="waitModal">Cargando...</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, espere mientras se cargan los horarios disponibles.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal espera -->
+        <!-- Modal de submit -->
+        <div id="wait-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="waitModal">Cargando...</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, espere mientras se cargan los horarios disponibles.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal de submit -->
         <div class="container" id="footer">
             <div class="row" id="footer_row">
                 J-40194581-3
             </div>
         </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.serialize-object.min.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="js/marina.js"></script>
-    <script type="text/javascript">
-        $( document ).on( 'ready', function() {
-            verifyAuth();
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/marina.js"></script>
+        <script type="text/javascript">
+            $( document ).on( 'ready', function() {
+                verifyAuth();
 
-            getUserBoats('boats');
+                $( '#wait-modal' ).modal({
+                    show: true
+                });
 
-            var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+                /**
+                 * Load the initial data
+                 */
+                $( '#datepicker' ).val( todaysDate() );
 
-            $( 'input[name="user"]' ).val( userinfo.id );
+                $('#datepicker').datetimepicker({
+                    minDate : todaysDate(),
+                    pickTime: false
+                });
 
-            $( '#boats' ).on( 'change', function (e) {
+                if ( typeof $.cookie( 'user-info' ) === 'undefined' ) {
+                    retrieveUserInfo();
+                }
+
+                var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+
+                $( 'input[name="user"]' ).val( userinfo.id );
+
+                if ( typeof $.cookie( 'user-boats' ) === 'undefined' ) {
+                    retrieveUserBoats();
+                }
+
+                $( '#boats' ).append(
+                    buildBoatsOptions( jQuery.parseJSON( $.cookie( 'user-boats' ) ) )
+                );
+
+                retrieveAvailableSchedules( $( '#schedule-form' ).serialize() );
+
+                var availableOptions = jQuery.parseJSON( $.cookie( 'available-schedules' ) );
+
+                $( '#schedule' ).html( buildScheduleOptions( availableOptions ) );
+
+                $( '#wait-modal' ).modal( 'toggle' );
+            });
+
+            $( '#boats' ).on( 'change', function ( event ) {
                 var optionSelected = $( this ).find('option:selected');
                 $( 'input[name="parking_lot"]' ).val( optionSelected.attr('pl') );
             });
-        });
 
-        // bind to the submit event of our form
-        $( '#schedule-form' ).on( 'submit', function( event ) {
-            // prevent default posting of form
-            event.preventDefault();
+            $( '.schedule-modifier' ).on('change', function(event) {
+                $( '#wait-modal' ).modal( 'toggle' );
 
-            // setup some local variables
-            var $form = $(this);
-            // let's select and cache all the fields
-            var $inputs = $form.find('input,select');
-            // serialize the data in the form
-            var serializedData = $form.serialize();
+                // setup some local variables
+                var $form = $( '#schedule-form' );
+                // let's select and cache all the fields
+                var $inputs = $form.find('input');
+                // serialize the data in the form
+                var serializedData = $form.serialize();
 
-            // let's disable the inputs for the duration of the ajax request
-            // Note: we disable elements AFTER the form data has been serialized.
-            // Disabled form elements will not be serialized.
-            $inputs.prop('disabled', true);
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                // Disabled form elements will not be serialized.
+                $inputs.prop('disabled', true);
 
-            // variable to hold request
-            var request;
+                retrieveAvailableSchedules( serializedData );
 
-            // abort any pending request
-            if (request) {
-                request.abort();
-            }
+                $( '#schedule' ).html( buildSchedulesOptions( 
+                        jQuery.parseJSON( $.cookie( 'available-schedules' ) )
+                    )
+                );
 
-            // fire off the request
-            request = $.ajax({
-                url:        apiURL+'/api/user/schedule',
-                type:       'post',
-                data:       serializedData,
-                dataType:   'json',
-                headers:    { Authorization : $.cookie( 'token-auth' ) },
-                xhrFields:  { withCredentials: false },
-                statusCode: {
-                                400: function() {
-                                    $( '#inputs' ).parent().prepend( '<div class="error">La información que ha introducido es inválida</div>' )
-                                },
-                                401: function() {
-                                    logout();
-                                }
-                            }
-            });
-
-            // callback handler that will be called on success
-            request.done(function (response, textStatus, jqXHR){
-                document.location.href = '/schedule.html';
-            });
-
-            // callback handler that will be called regardless
-            // if the request failed or succeeded
-            request.always(function () {
                 // reenable the inputs
                 $inputs.prop('disabled', false);
-                $( '.error' ).remove();
+                
+                $( '#wait-modal' ).modal( 'toggle' );
             });
-        });
-        
-    </script>
+
+            // bind to the submit event of our form
+            $( '#schedule-form' ).on( 'submit', function( event ) {
+                // prevent default posting of form
+                event.preventDefault();
+                alert('ANTES');
+            });
+        </script>
     </body>
 </html>
 
