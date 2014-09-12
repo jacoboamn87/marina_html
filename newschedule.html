@@ -123,7 +123,8 @@
                 $( '#wait-modal' ).modal({
                     show: true
                 });
-                $( '#connection-error-modal' ).modal({
+
+                 $( '#connection-error-modal' ).modal({
                     show: false
                 });
 
@@ -159,7 +160,7 @@
 
                 var availableOptions = jQuery.parseJSON( $.cookie( 'available-schedules' ) );
 
-                $( '#schedule' ).html( buildScheduleOptions( availableOptions ) );
+                $( '#action_time' ).html( buildScheduleOptions( availableOptions ) );
 
                 $( '#wait-modal' ).modal( 'hide' );
             });
@@ -167,6 +168,11 @@
             $( '#boats' ).on( 'change', function ( event ) {
                 var optionSelected = $( this ).find('option:selected');
                 $( 'input[name="parking_lot"]' ).val( optionSelected.attr('pl') );
+            });
+
+            $( '#action_time' ).on( 'change', function ( event ) {
+                var optionSelected = $( this ).val();
+                $( 'input[name="schedule"]' ).val( optionSelected.attr('schedule') );
             });
 
             $( '.schedule-modifier' ).on('change', function(event) {
@@ -186,7 +192,7 @@
 
                 retrieveAvailableSchedules( serializedData );
 
-                $( '#schedule' ).html( buildSchedulesOptions( 
+                $( '#action_time' ).html( buildScheduleOptions( 
                         jQuery.parseJSON( $.cookie( 'available-schedules' ) )
                     )
                 );
@@ -265,5 +271,3 @@
         </script>
     </body>
 </html>
-
-
