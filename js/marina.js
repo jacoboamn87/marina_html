@@ -107,7 +107,7 @@ function verifyAuth() {
     }
 }
 
-function getUserSchedule( domId ) {
+function getUserSchedule() {
     // variable to hold request
     var request;
 
@@ -119,7 +119,7 @@ function getUserSchedule( domId ) {
     // fire off the request
     request = $.ajax({
         async:      false, 
-        url:        apiURL+'/api/user/schedule',
+        url:        apiURL+'/api/user/schedule/',
         type:       'get',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
@@ -141,14 +141,14 @@ function getUserSchedule( domId ) {
 
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
-        var html = buildScheduleList( response );
-        $( '#'+domId ).append( html );
-    });
+        $.cookie.json = true;
 
-    // callback handler that will be called regardless
-    // if the request failed or succeeded
-    request.always(function () {
-        $( '.error' ).remove();
+        if ( response ) {
+            $.cookie( 'user-schedule', response );
+        }
+        else {
+            $.cookie( 'user-schedule', false );
+        }
     });
 }
 
@@ -167,12 +167,27 @@ function deleteScheduledAction( domId, href ) {
         url:        apiURL+href,
         type:       'put',
         dataType:   'json',
-        data:       { status: 'CAN' }, 
         xhrFields:  { withCredentials: false },
         headers:    { Authorization : $.cookie( 'token-auth' ) },
         statusCode: {
+            200: function() {
+                var $item = $( '#'+domId );
+
+                if ( $item.siblings( '.body-item-reserva' ).length > 0 ) {
+                    $item.remove();
+                }
+                else {
+                    $item.parents( '.list-group' ).remove();
+                }
+            },
+            400: function() {
+                $( '#connection-error-modal' ).modal( 'show' );
+            },
             401: function() {
                 logout();
+            },
+            404: function() {
+                $( '#connection-error-modal' ).modal( 'show' );
             }
         }
     });
@@ -185,9 +200,8 @@ function deleteScheduledAction( domId, href ) {
         }
     });
 
-    // callback handler that will be called on success
-    request.done( function ( response, textStatus, jqXHR ) {
-        $( '#'+domId ).parent().remove();
+    request.always(function () {
+        $( '#wait-modal' ).modal( 'hide' );
     });
 }
 
@@ -370,4 +384,37 @@ function retrieveAvailableSchedules( search_params ){
         $.cookie.json = true;
         $.cookie( 'available-schedules', response );
     });
+}
+
+function updateAvailableSchedules(){
+    $( '#wait-modal' ).modal( 'toggle' );
+
+    // setup some local variables
+    var $form = $( '#schedule-form' );
+    // let's select and cache all the fields
+    var $inputs = $form.find('input');
+
+    // This is to be sure that all elements in the
+    // form will be serialized
+    $inputs.prop('disabled', false);
+
+    // serialize the data in the form
+    var serializedData = $form.serialize();
+
+    // let's disable the inputs for the duration of the ajax request
+    // Note: we disable elements AFTER the form data has been serialized.
+    // Disabled form elements will not be serialized.
+    $inputs.prop('disabled', true);
+
+    retrieveAvailableSchedules( serializedData );
+
+    $( '#action_time' ).html( buildScheduleOptions( 
+            jQuery.parseJSON( $.cookie( 'available-schedules' ) )
+        )
+    );
+
+    // reenable the inputs
+    $inputs.prop('disabled', false);
+    
+    $( '#wait-modal' ).modal( 'toggle' );
 }

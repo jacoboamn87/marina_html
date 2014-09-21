@@ -33,6 +33,7 @@
                         <input type="hidden" name="parking_lot" class="schedule-modifier">
                         <input type="hidden" name="user">
                         <input type="hidden" name="schedule">
+                        <input type="hidden" name="status" value="ACT">
                         <select class="form-control" name="boat" id="boats">
                         </select>
                         <select class="form-control" name="action" id="action">
@@ -81,7 +82,7 @@
                         <h4 class="modal-title" id="waitModal">Cargando...</h4>
                     </div>
                     <div class="modal-body">
-                        Por favor, espere mientras se cargan los horarios disponibles.
+                        Por favor, espere mientras se procesa su solicitud.
                     </div>
                 </div>
             </div>
@@ -109,6 +110,28 @@
             </div>
         </div>
         <!-- Fin modal de error de conexión -->
+        <!-- Modal hora no seleccionada -->
+        <div id="no-hour-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="waitModal">Seleccione la hora de su reservaci&oacute;n</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, elija alguno de los horarios disponibles.
+                        <br/>
+                        En caso que la lista est&eacute; vac&iacute;a, por favor, seleccione otra fecha.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal hora no seleccionada -->
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/moment.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -124,9 +147,13 @@
                     show: true
                 });
 
-                 $( '#connection-error-modal' ).modal({
+                $( '#connection-error-modal' ).modal({
                     show: false
                 });
+
+                $( '#no-hour-modal' ).modal({
+                    show: false
+                }); 
 
                 /**
                  * Load the initial data
@@ -135,10 +162,12 @@
 
                 $( '#datepicker' ).val( today );
 
-                $('#datepicker').datetimepicker({
+                $( '#datepicker' ).datetimepicker({
                     minDate : today,
                     pickTime: false
                 });
+
+                $( 'input[name="status"]' ).val('ACT');
 
                 if ( ! $.cookie( 'user-info' ) ) {
                     retrieveUserInfo();
@@ -171,42 +200,23 @@
             });
 
             $( '#action_time' ).on( 'change', function ( event ) {
-                var optionSelected = $( this ).val();
+                var optionSelected = $( this ).find('option:selected');
                 $( 'input[name="schedule"]' ).val( optionSelected.attr('schedule') );
             });
 
             $( '.schedule-modifier' ).on('change', function(event) {
-                $( '#wait-modal' ).modal( 'toggle' );
-
-                // setup some local variables
-                var $form = $( '#schedule-form' );
-                // let's select and cache all the fields
-                var $inputs = $form.find('input');
-                // serialize the data in the form
-                var serializedData = $form.serialize();
-
-                // let's disable the inputs for the duration of the ajax request
-                // Note: we disable elements AFTER the form data has been serialized.
-                // Disabled form elements will not be serialized.
-                $inputs.prop('disabled', true);
-
-                retrieveAvailableSchedules( serializedData );
-
-                $( '#action_time' ).html( buildScheduleOptions( 
-                        jQuery.parseJSON( $.cookie( 'available-schedules' ) )
-                    )
-                );
-
-                // reenable the inputs
-                $inputs.prop('disabled', false);
-                
-                $( '#wait-modal' ).modal( 'toggle' );
+                updateAvailableSchedules();
             });
 
             // bind to the submit event of our form
             $( '#schedule-form' ).on( 'submit', function( event ) {
                 // prevent default posting of form
                 event.preventDefault();
+
+                if ( !$( 'input[name="schedule"]' ).val() ){
+                    $( '#no-hour-modal' ).modal( 'toggle' );
+                    return;
+                }
 
                 // setup some local variables
                 var $form = $( this );
@@ -232,13 +242,29 @@
 
                 // fire off the request
                 request = $.ajax({
-                    url:        URL.replace('<pk>', serializedData.schedule),
-                    type:       'post',
+                    url:        URL.replace( '<pk>', $( 'input[name="schedule"]' ).val() ),
+                    type:       'put',
                     data:       serializedData,
                     dataType:   'json',
                     xhrFields:  { withCredentials: false },
                     headers:    { Authorization : $.cookie( 'token-auth' ) },
                     statusCode: {
+                        400: function( jqXHR ) {
+                            var tmpl = $( '#error-template' ).html();
+
+                            $.each(jQuery.parseJSON( jqXHR.responseText ), function(index, val) {
+                                var compiledTmpl = tmpl.replace(/__message__/g, val);
+
+                                if ( index != 'non_field_errors' ) {
+                                    $( 'input[name="' + index + '"]' ).before( compiledTmpl );
+                                }
+                                else {
+                                    $( '.content_reserva_row' ).prepend( compiledTmpl );
+                                }
+                            });
+
+                            updateAvailableSchedules();
+                        },
                         401: function() {
                             logout();
                         }
@@ -247,17 +273,14 @@
 
                 // callback handler that will be called on fail
                 request.fail( function( jqXHR, textStatus, errorThrown ) {
-                    if ( errorThrown == '' ) {
+                    if ( errorThrown != 'BAD REQUEST' ) {
                         $( '#connection-error-modal' ).modal( 'toggle' );
                     }
                 });
 
                 // callback handler that will be called on success
                 request.done(function (response, textStatus, jqXHR){
-                    // Set the authorization cookie
-                    $.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
-                    
-                    document.location.href = '/desk.html';
+                    document.location.href = '/schedule.html';
                 });
 
                 // callback handler that will be called regardless
@@ -268,6 +291,12 @@
                     $( '.error-msg' ).remove();
                 });
             });
+        </script>
+        <script type="text/html" id="error-template">
+            <div class="col-md-6 col-md-offset-3 error-msg">
+                <span class="glyphicon glyphicon-remove"></span> 
+                __message__
+            </div>
         </script>
     </body>
 </html>

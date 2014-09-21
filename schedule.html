@@ -27,7 +27,9 @@
         </div>
 		<!-- Content -->
 		<div class="container" id="content">
-			<div class="row"><div id="schedule-container" class="col-md-6 col-md-offset-3"></div></div>
+			<div class="row">
+				<div id="schedule-container" class="col-md-6 col-md-offset-3"></div>
+			</div>
 		</div>
 		<!-- Boton -->
 		<div class="container text-center">
@@ -41,23 +43,141 @@
 				J-40194581-3
 			</div>
 		</div>
-		<script src="js/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/jquery.serialize-object.min.js"></script>
-		<script src="js/jquery.cookie.js"></script>
-		<script src="js/marina.js"></script>
+		<!-- Modal de espera -->
+        <div id="wait-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="waitModal">Cancelando...</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, espere mientras procesamos su solicitud.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal espera -->
+        <!-- Modal de error de conexión -->
+        <div id="connection-error-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="waitModal">Esto es extraño...</h4>
+                    </div>
+                    <div class="modal-body">
+                        En estos momentos no se ha podido establecer conexión con el servidor.
+                        <br/>
+                        Por favor, intente nuevamente más tarde.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal de error de conexión -->
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
+		<script type="text/javascript" src="js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="js/marina.js"></script>
 		<script type="text/javascript">
+			function buildUserSchedule() {
+				var userSchedule = jQuery.parseJSON( $.cookie( 'user-schedule' ) );
+
+				var blockTemplate = $( '#block-template' ).html();
+				var itemTemplate = $( '#item-template' ).html();
+				var blocks = {};
+
+				$.each( userSchedule, function(index, scheudledAction) {
+					var compiledItemTemplate = itemTemplate
+												.replace( /__schedule__/g, scheudledAction.id )
+												.replace( /__date__/g, scheudledAction.action_date )
+												.replace( /__time__/g, scheudledAction.action_time );
+
+					if ( scheudledAction.action == 'IN' ) {
+						compiledItemTemplate = compiledItemTemplate.replace( /__action__/g, '<span class="glyphicon glyphicon-arrow-up"></span> Subir embarcaci&oacute;n.' );
+					}
+					else {
+						compiledItemTemplate = compiledItemTemplate.replace( /__action__/g, '<span class="glyphicon glyphicon-arrow-up"></span> Subir embarcaci&oacute;n.' );
+					}
+
+					if ( scheudledAction.boat in blocks ) {
+						blocks[ scheudledAction.boat ].items = blocks[ scheudledAction.boat ].items + compiledItemTemplate
+					}
+					else {
+						blocks[ scheudledAction.boat ] = {
+							block: blockTemplate.replace( /__boat__/g, scheudledAction.boat_name ),
+							items: compiledItemTemplate
+						}
+					}
+				});
+
+				var html = '';
+
+				$.each( blocks, function( index, block ) {
+					html = html + block.block.replace( /__body__/g, block.items );
+				});
+
+				$( '#schedule-container' ).append( html );
+			}
+
 			$( document ).on( 'ready', function() {
 				verifyAuth();
 
-				getUserSchedule( 'schedule-container' );
+				$( '#wait-modal' ).modal({
+                    show: false
+                });
+
+				getUserSchedule();
+
+				buildUserSchedule();
 			});
 
 			$( document ).on( 'click', 'a.cancel-schedule', function( event ) {
 				event.preventDefault();
 
-				deleteScheduledAction( $( this ).attr( 'id' ), $( this ).attr( 'href' ), $( this ).attr( 'sch' ) );
+            	$( '#wait-modal' ).modal( 'hide' );
+
+				deleteScheduledAction( $( this ).attr( 'sch' ), $( this ).attr( 'href' ) );
 			});
+		</script>
+		<script type="text/html" id="block-template">
+			<div class="list-group">
+				<div class="item-reserva">
+					<div class="header-item-reserva">
+						<a class="nombre-bote" href="http://hmpe.turpialdev.com/schedule.html#">__boat__</a>
+					</div>
+					__body__
+				</div>
+			</div>
+		</script>
+		<script type="text/html" id="item-template">
+			<div id="__schedule__" class="body-item-reserva">
+				<div class="movimiento-embarcacion">
+					__action__
+					<a class="cancel-schedule btn btn-default btn-cancelar btn-xs"
+						href="/api/user/schedule/__schedule__/cancel/" sch="__schedule__" title="Cancelar">
+						<span class="glyphicon glyphicon-remove-circle"></span>
+					</a>
+				</div>
+				<div class="movimiento-fecha">
+					<div class="movimiento-fecha-label">
+						<span class="glyphicon glyphicon-calendar"></span> Fecha
+					</div>
+					<div class="movimiento-fecha-fecha">__date__</div> 
+				</div>
+				<hr class="movimiento-hr">
+				<div class="movimiento-fecha">
+					<div class="movimiento-fecha-label">
+						<span class="glyphicon glyphicon-time"></span> Hora
+					</div>
+					<div class="movimiento-fecha-fecha">__time__</div> 
+				</div>
+			</div>
 		</script>
 	</body>
 </html>
