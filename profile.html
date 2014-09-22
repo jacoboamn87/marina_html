@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>HMPE : Agendar</title>
+        
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <div class="go_back">
+            <a href="/desk.html">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+            </a>
+        </div>
+        <div class="container" id="header">
+            <div class="row top_logo_row_inner">
+                <img id="main-logo" class="top_logo" src="/img/logo.png">
+            </div>
+            <div class="row top_message_row">
+                PERFIL
+            </div>
+        </div>
+        <div class="container" id="content">
+            <div class="row content_reserva_row">
+                <form id="user-form" class="col-md-6 col-md-offset-3" action="schedule">
+                    <div id="inputs" class="input">
+                        <input type="hidden" name="id">
+                        <span class="glyphicon glyphicon-user"></span> Nombre
+                        <input type="text" class="form-control" placeholder="Nombre" 
+                            name="first_name" required>
+                        <span class="glyphicon glyphicon-user"></span> Apellido
+                        <input type="text" class="form-control" placeholder="Apellido" 
+                            name="last_name" required>
+                        <span class="glyphicon glyphicon-envelope"></span> Correo Electr&oacute;nico
+                        <input type="text" class="form-control" placeholder="Correo Electr&oacute;nico" 
+                            name="email" required>
+                    </div>
+                </form>
+                <form id="profile-form" class="col-md-6 col-md-offset-3" action="schedule">
+                    <div id="inputs" class="input">
+                        <input type="hidden" name="id">
+                        <span class="glyphicon glyphicon-calendar"></span> Fecha de Nacimiento
+                        <input id="datepicker" type="text" class="form-control" data-date-format="DD-MM-YYYY"
+                            placeholder="Fecha de Nacimiento" name="birthdate">
+                        <span class="glyphicon glyphicon-user"></span> C&eacute;dula de Identidad
+                        <input type="text" class="form-control" 
+                            placeholder="C&eacute;dula de Identidad" name="id_number">
+                        <span class="glyphicon glyphicon-earphone"></span> N&uacute;mero Telef&oacute;nico
+                        <input type="text" class="form-control" 
+                            placeholder="N&uacute;mero Telef&oacute;nico" name="phone_number1" required>
+                        <span class="glyphicon glyphicon-earphone"></span> N&uacute;mero Telef&oacute;nico (opcional)
+                        <input type="text" class="form-control" 
+                            placeholder="N&uacute;mero Telef&oacute;nico" name="phone_number2">
+                        <span class="glyphicon glyphicon-earphone"></span> N&uacute;mero Telef&oacute;nico (opcional)
+                        <input type="text" class="form-control" 
+                            placeholder="N&uacute;mero Telef&oacute;nico" name="phone_number3">
+                        <span class="glyphicon glyphicon-home"></span> Direcci&oacute;n
+                        <input type="text" class="form-control" 
+                            placeholder="Direcci&oacute;n" name="address_line1" required>
+                        <span class="glyphicon glyphicon-home"></span> Direcci&oacute;n (cont.)
+                        <input type="text" class="form-control" 
+                            placeholder="Direcci&oacute;n" name="address_line2">
+                        <br/>
+                        <button class="reservar_button  btn">ACTUALIZAR</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" id="footer">
+            <div class="row" id="footer_row">
+                J-40194581-3
+            </div>
+        </div>
+        <!-- Modal de espera -->
+        <div id="wait-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="waitModal">Procesando...</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, espere mientras se procesa la informaci&oacute;n.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal espera -->
+        <!-- Modal de submit -->
+        <div id="submit-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="waitModal">Procesando...</h4>
+                    </div>
+                    <div class="modal-body">
+                        Por favor, espere mientras se procesa su solicitud.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal de submit -->
+        <!-- Modal de error de conexión -->
+        <div id="connection-error-modal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="waitModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="waitModal">Esto es extraño...</h4>
+                    </div>
+                    <div class="modal-body">
+                        En estos momentos no se ha podido establecer conexión con el servidor.
+                        <br/>
+                        Por favor, intente nuevamente más tarde.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal de error de conexión -->
+        
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/moment.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/marina.js"></script>
+        <script type="text/javascript">
+            $( document ).on( 'ready', function() {
+                verifyAuth();
+
+                $( '#wait-modal' ).modal({
+                    show: true
+                });
+
+                $( '#submit-modal' ).modal({
+                    show: false
+                });
+
+                $( '#connection-error-modal' ).modal({
+                    show: false
+                });
+
+                /**
+                 * Load the initial data
+                 */
+                $( '#datepicker' ).datetimepicker({
+                    pickTime: false
+                });
+
+                retrieveUserInfo();
+
+                var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+
+                $(  '#user-form input[name="id"]' ).val( userinfo.id );
+                $(  '#user-form input[name="first_name"]' ).val( userinfo.first_name );
+                $(  '#user-form input[name="last_name"]' ).val( userinfo.last_name );
+                $(  '#user-form input[name="email"]' ).val( userinfo.email );
+
+                $(  '#profile-form input[name="id"]' ).val( userinfo.user_profile.id );
+                $(  '#profile-form input[name="birthdate"]' ).val( userinfo.user_profile.display_birthdate );
+                $(  '#profile-form input[name="id_number"]' ).val( userinfo.user_profile.id_number );
+                $(  '#profile-form input[name="address_line1"]' ).val( userinfo.user_profile.address_line1 );
+                $(  '#profile-form input[name="address_line2"]' ).val( userinfo.user_profile.address_line2 );
+                $(  '#profile-form input[name="phone_number1"]' ).val( userinfo.user_profile.phone_number1 );
+                $(  '#profile-form input[name="phone_number2"]' ).val( userinfo.user_profile.phone_number2 );
+                $(  '#profile-form input[name="phone_number3"]' ).val( userinfo.user_profile.phone_number3 );
+
+                $( '#wait-modal' ).modal( 'hide' );
+            });
+
+            // bind to the submit event of our form
+            $( 'form' ).on( 'submit', function( event ) {
+                // prevent default posting of form
+                event.preventDefault();
+
+                $( '#submit-modal' ).modal( 'show' );
+
+                // setup some local variables
+                var $userForm = $( '#user-form' );
+                var $profileForm = $( '#profile-form' );
+                // let's select and cache all the fields
+                var $userInputs = $userForm.find('input');
+                var $profileInputs = $profileForm.find('input');
+
+                // serialize the data in the form
+                var userData = $userForm.serialize();
+                var profileData = $profileForm.serialize();
+
+                // let's disable the inputs for the duration of the ajax request
+                // Note: we disable elements AFTER the form data has been serialized.
+                // Disabled form elements will not be serialized.
+                $userInputs.prop('disabled', true);
+                $profileInputs.prop('disabled', true);
+
+                var userURL = apiURL+'/api/user/<pk>/update/'
+
+                $( '.error-msg' ).remove();
+                
+                // variable to hold request
+                var request;
+
+                // abort any pending request
+                if (request) {
+                    request.abort();
+                }
+
+                // fire off the request
+                request = $.ajax({
+                    url:        userURL.replace( '<pk>', $( '#user-form input[name="id"]' ).val() ),
+                    type:       'put',
+                    data:       userData,
+                    dataType:   'json',
+                    xhrFields:  { withCredentials: false },
+                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    statusCode: {
+                        400: function( jqXHR ) {
+                            var tmpl = $( '#error-template' ).html();
+
+                            $.each(jQuery.parseJSON( jqXHR.responseText ), function(index, val) {
+                                var compiledTmpl = tmpl.replace(/__message__/g, val);
+
+                                if ( index != 'non_field_errors' ) {
+                                    $( '#user-form input[name="' + index + '"]' ).before( compiledTmpl );
+                                }
+                                else {
+                                    $( '.content_reserva_row' ).prepend( compiledTmpl );
+                                }
+                            });
+                        },
+                        401: function() {
+                            logout();
+                        }
+                    }
+                });
+
+                // callback handler that will be called on fail
+                request.fail( function( jqXHR, textStatus, errorThrown ) {
+                    if ( errorThrown != 'BAD REQUEST' ) {
+                        $( '#connection-error-modal' ).modal( 'show' );
+                    }
+                });
+
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request.always(function () {
+                    // reenable the inputs
+                    $userInputs.prop('disabled', false);
+                });
+
+                // variable to hold request
+                var request2;
+
+                // abort any pending request
+                if (request2) {
+                    request2.abort();
+                }
+
+                var profileURL = apiURL+'/api/user/profile/<pk>/update/'
+
+                // fire off the request
+                request2 = $.ajax({
+                    url:        profileURL.replace( '<pk>', $( '#profile-form input[name="id"]' ).val() ),
+                    type:       'put',
+                    data:       profileData,
+                    dataType:   'json',
+                    xhrFields:  { withCredentials: false },
+                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    statusCode: {
+                        400: function( jqXHR ) {
+                            var tmpl = $( '#error-template' ).html();
+
+                            $.each(jQuery.parseJSON( jqXHR.responseText ), function(index, val) {
+                                var compiledTmpl = tmpl.replace(/__message__/g, val);
+
+                                if ( index != 'non_field_errors' ) {
+                                    $( '#profile-form input[name="' + index + '"]' ).before( compiledTmpl );
+                                }
+                                else {
+                                    $( '.content_reserva_row' ).prepend( compiledTmpl );
+                                }
+                            });
+                        },
+                        401: function() {
+                            logout();
+                        }
+                    }
+                });
+
+                // callback handler that will be called on fail
+                request2.fail( function( jqXHR, textStatus, errorThrown ) {
+                    if ( errorThrown != 'BAD REQUEST' ) {
+                        $( '#connection-error-modal' ).modal( 'show' );
+                    }
+                });
+
+                // callback handler that will be called regardless
+                // if the request failed or succeeded
+                request2.always(function () {
+                    // reenable the inputs
+                    $profileInputs.prop('disabled', false);
+                });
+
+                $( '#submit-modal' ).modal( 'hide' );
+            });
+        </script>
+        <script type="text/html" id="error-template">
+            <div class="col-md-6 col-md-offset-3 error-msg">
+                <span class="glyphicon glyphicon-remove"></span> 
+                __message__
+            </div>
+        </script>
+    </body>
+</html>

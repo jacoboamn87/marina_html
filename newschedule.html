@@ -169,17 +169,13 @@
 
                 $( 'input[name="status"]' ).val('ACT');
 
-                if ( ! $.cookie( 'user-info' ) ) {
-                    retrieveUserInfo();
-                }
+                retrieveUserInfo();
 
                 var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
 
                 $( 'input[name="user"]' ).val( userinfo.id );
 
-                if ( ! $.cookie( 'user-boats' ) ) {
-                    retrieveUserBoats();
-                }
+                retrieveUserBoats();
 
                 $( '#boats' ).append(
                     buildBoatsOptions( jQuery.parseJSON( $.cookie( 'user-boats' ) ) )
