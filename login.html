@@ -1,13 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>  
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title>HMPE : Ingresar</title>
-        <link rel="stylesheet" href="/css/bootstrap.css">
-        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Montserrat' type='text/css'>
-        <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
         <div class="container" id="header">
@@ -65,15 +66,15 @@
             </div>
         </div>
         <!-- Fin modal de error de conexión -->
-        <script type="text/javascript" src="/js/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/jquery.serialize-object.min.js"></script>
-        <script type="text/javascript" src="/js/jquery.cookie.js"></script>
-        <script type="text/javascript" src="/js/marina.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
+        <script type="text/javascript" src="js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="js/marina.js"></script>
         <script type="text/javascript">
             $( document ).on( 'ready', function() {
                 if ( $.cookie( 'token-auth' ) ) {
-                    document.location.href = '/desk.html';
+                    document.location.href = 'desk.html';
                 };
             });
 
@@ -136,7 +137,7 @@
                     // Set the authorization cookie
                     $.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
                     
-                    document.location.href = '/desk.html';
+                    document.location.href = 'desk.html';
                 });
 
                 // callback handler that will be called regardless

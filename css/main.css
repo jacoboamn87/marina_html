@@ -355,3 +355,13 @@ div.error-msg{
 	font-weight: bold;
 	font-size: 20px
 }
+.modal-body{
+	font-size: 16px;
+}
+.modal-body,.modal-footer{
+	padding: 10px 20px;
+	color: #000;
+}
+.modal-footer{
+	margin-top: 0px;
+}

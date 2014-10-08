@@ -1,4 +1,3 @@
-
 var apiURL  = 'http://marina.andresazp.webfactional.com';
 //var apiURL  = 'http://127.0.0.1:8000';
 
@@ -98,12 +97,12 @@ function buildScheduleOption( schedule ) {
 function logout() {
     $.removeCookie( 'token-auth' );
     $.removeCookie( 'user-info' );
-    document.location.href = '/login.html';
+    document.location.href = 'login.html';
 }
 
 function verifyAuth() {
     if ( !$.cookie( 'token-auth' ) ) {
-        document.location.href = '/login.html';
+        document.location.href = 'login.html';
     }
 }
 
@@ -335,7 +334,7 @@ function reserveSchedule( form ){
 
     // callback handler that will be called on success
     request.done(function (response, textStatus, jqXHR){
-        document.location.href = '/schedule.html';
+        document.location.href = 'schedule.html';
     });
 
     // callback handler that will be called regardless
