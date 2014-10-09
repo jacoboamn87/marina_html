@@ -69,11 +69,13 @@
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
-        <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/marina.js"></script>
         <script type="text/javascript">
             $( document ).on( 'ready', function() {
-                if ( $.cookie( 'token-auth' ) ) {
+                supports_storage();
+                supports_json();
+
+                if ( is_logged_in() ) {
                     document.location.href = 'desk.html';
                 }
             });
@@ -134,8 +136,7 @@
 
                 // callback handler that will be called on success
                 request.done(function (response, textStatus, jqXHR){
-                    // Set the authorization cookie
-                    $.cookie( 'token-auth', 'Token '+response.token, { expires: 7 } );
+                    localStorage.setItem( 'token-auth', 'Token '+response.token );
                     
                     document.location.href = 'desk.html';
                 });
@@ -151,4 +152,3 @@
         </script>
     </body>
 </html>
-

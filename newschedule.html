@@ -140,7 +140,7 @@
         <script type="text/javascript" src="js/marina.js"></script>
         <script type="text/javascript">
             $( document ).on( 'ready', function() {
-                verifyAuth();
+                is_logged_in_or_redirect();
 
                 $( '#wait-modal' ).modal({
                     show: true
@@ -170,19 +170,19 @@
 
                 retrieveUserInfo();
 
-                var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+                var userinfo = jQuery.parseJSON( localStorage.getItem( 'user-info' ) );
 
                 $( 'input[name="user"]' ).val( userinfo.id );
 
                 retrieveUserBoats();
 
                 $( '#boats' ).append(
-                    buildBoatsOptions( jQuery.parseJSON( $.cookie( 'user-boats' ) ) )
+                    buildBoatsOptions( jQuery.parseJSON( localStorage.getItem( 'user-boats' ) ) )
                 );
 
                 retrieveAvailableSchedules( $( '#schedule-form' ).serialize() );
 
-                var availableOptions = jQuery.parseJSON( $.cookie( 'available-schedules' ) );
+                var availableOptions = jQuery.parseJSON( localStorage.getItem( 'available-schedules' ) );
 
                 $( '#action_time' ).html( buildScheduleOptions( availableOptions ) );
 
@@ -242,7 +242,7 @@
                     data:       serializedData,
                     dataType:   'json',
                     xhrFields:  { withCredentials: false },
-                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
                     statusCode: {
                         400: function( jqXHR ) {
                             var tmpl = $( '#error-template' ).html();

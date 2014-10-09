@@ -132,11 +132,10 @@
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
         <script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
-        <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/marina.js"></script>
         <script type="text/javascript">
             $( document ).on( 'ready', function() {
-                verifyAuth();
+                is_logged_in_or_redirect();
 
                 $( '#wait-modal' ).modal({
                     show: true

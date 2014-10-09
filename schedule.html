@@ -99,11 +99,10 @@
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.serialize-object.min.js"></script>
-		<script type="text/javascript" src="js/jquery.cookie.js"></script>
 		<script type="text/javascript" src="js/marina.js"></script>
 		<script type="text/javascript">
 			function buildUserSchedule() {
-				var userSchedule = jQuery.parseJSON( $.cookie( 'user-schedule' ) );
+				var userSchedule = jQuery.parseJSON( localStorage.getItem( 'user-schedule' ) );
 
 				var blockTemplate = $( '#block-template' ).html();
 				var itemTemplate = $( '#item-template' ).html();
@@ -123,13 +122,13 @@
 					}
 
 					if ( scheudledAction.boat in blocks ) {
-						blocks[ scheudledAction.boat ].items = blocks[ scheudledAction.boat ].items + compiledItemTemplate
+						blocks[ scheudledAction.boat ].items = blocks[ scheudledAction.boat ].items + compiledItemTemplate;
 					}
 					else {
 						blocks[ scheudledAction.boat ] = {
 							block: blockTemplate.replace( /__boat__/g, scheudledAction.boat_name ),
 							items: compiledItemTemplate
-						}
+						};
 					}
 				});
 
@@ -143,7 +142,7 @@
 			}
 
 			$( document ).on( 'ready', function() {
-				verifyAuth();
+				is_logged_in_or_redirect();
 
 				$( '#wait-modal' ).modal({
                     show: false

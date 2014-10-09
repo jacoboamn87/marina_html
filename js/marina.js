@@ -1,13 +1,94 @@
+/**
+ * This version is build to use localStorage
+ */
+
 var apiURL  = 'http://marina.andresazp.webfactional.com';
 //var apiURL  = 'http://127.0.0.1:8000';
 
 /**
- * jQuery Cookie Plugin 
- * 
- * By default the cookie value is encoded/decoded when writing/reading,
- * using encodeURIComponent/decodeURIComponent. Bypass this by setting raw to true:
+ * Checks if the device/browser supports the use of HTML5 localStorage
+ * @return {boolean} Returns true if the device/briwser supports localStorage 
  */
-$.cookie.raw = true;
+function supports_html5_storage() {
+    try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return false;
+    }
+}
+
+function supports_storage() {
+    if ( !supports_html5_storage() ) {
+        alert("This browser does not support storage.");
+        return;
+    }
+}
+
+function supports_json() {
+    if( !( window.JSON && window.JSON.parse ) ) {
+        alert("This browser does not support JSON.");
+        return;
+    }
+}
+
+function is_logged_in() {
+    var token = localStorage.getItem( 'token-auth' );
+
+    if ( token ) {
+        return true;
+    }
+    
+    return false;
+}
+
+function is_logged_in_or_redirect() {
+    if ( !is_logged_in() ) {
+        document.location.href = 'login.html';
+    }
+}
+
+function logout() {
+    localStorage.clear();
+    document.location.href = 'login.html';
+}
+
+function retrieveUserInfo() {
+    // variable to hold request
+    var request;
+
+    // abort any pending request
+    if (request) {
+        request.abort();
+    }
+
+    // fire off the request
+    request = $.ajax({
+        async:      false,
+        url:        apiURL+'/api/user/info/',
+        type:       'get',
+        dataType:   'json',
+        xhrFields:  { withCredentials: false },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
+        statusCode: {
+            401: function() {
+                logout();
+            }
+        }
+    });
+
+    // callback handler that will be called on fail
+    request.fail( function( jqXHR, textStatus, errorThrown ) {
+        if ( errorThrown === '' ) {
+            $( '#wait-modal' ).modal( 'hide' );
+            $( '#connection-error-modal' ).modal( 'show' );
+        }
+    });
+
+    // callback handler that will be called on success
+    request.done( function ( response, textStatus, jqXHR ) {
+        localStorage.setItem( 'user-info', JSON.stringify( response ) );
+    });
+}
 
 function todaysDate(){
     var fullDate = new Date();
@@ -39,10 +120,10 @@ function buildScheduleList( schedule ) {
 }
 
 function buildScheduleRow( it ) {
-    var outActionIcon = '<span class="glyphicon glyphicon-chevron-down"></span>'
-    var inActionIcon = '<span class="glyphicon glyphicon-chevron-up"></span>'
-    var options = { 'class': 'list-group-item' }
-    var item = $( '<div>', options )
+    var outActionIcon = '<span class="glyphicon glyphicon-chevron-down"></span>';
+    var inActionIcon = '<span class="glyphicon glyphicon-chevron-up"></span>';
+    var options = { 'class': 'list-group-item' };
+    var item = $( '<div>', options );
 
     if ( it.action.toLowerCase() == 'in' ) {
         item.append(inActionIcon);
@@ -53,7 +134,7 @@ function buildScheduleRow( it ) {
 
     item.append('<a class="nombre-bote" href="#">'+it.boat_name+'</a> &nbsp; &nbsp; &nbsp; &nbsp;');
     item.append('<span class="fecha-bote">'+it.action_date+'</span>');
-    item.append(' &nbsp; &nbsp;<a id="sch-'+it.id+'" type="btn-default" class="cancel-schedule btn btn-default btn-xs" href="/api/user/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>')
+    item.append(' &nbsp; &nbsp;<a id="sch-'+it.id+'" type="btn-default" class="cancel-schedule btn btn-default btn-xs" href="/api/user/schedule/'+it.id+'" sch="'+it.id+'"><span class="glyphicon glyphicon-remove-circle"></span> Cancelar</a>');
 
     return item
 }
@@ -94,18 +175,6 @@ function buildScheduleOption( schedule ) {
     return '<option value="' + schedule.avaible_time + '" schedule="' + schedule.id + '">' + schedule.avaible_time + '</option>';
 }
 
-function logout() {
-    $.removeCookie( 'token-auth' );
-    $.removeCookie( 'user-info' );
-    document.location.href = 'login.html';
-}
-
-function verifyAuth() {
-    if ( !$.cookie( 'token-auth' ) ) {
-        document.location.href = 'login.html';
-    }
-}
-
 function getUserSchedule() {
     // variable to hold request
     var request;
@@ -122,7 +191,7 @@ function getUserSchedule() {
         type:       'get',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
         statusCode: {
             401: function() {
                 logout();
@@ -132,7 +201,7 @@ function getUserSchedule() {
 
     // callback handler that will be called on fail
     request.fail( function( jqXHR, textStatus, errorThrown ) {
-        if ( errorThrown == '' ) {
+        if ( errorThrown === '' ) {
             $( '#wait-modal' ).modal( 'hide' );
             $( '#connection-error-modal' ).modal( 'show' );
         }
@@ -140,13 +209,11 @@ function getUserSchedule() {
 
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
-        $.cookie.json = true;
-
         if ( response ) {
-            $.cookie( 'user-schedule', response );
+            localStorage.setItem( 'user-schedule', JSON.stringify( response ) );
         }
         else {
-            $.cookie( 'user-schedule', false );
+            localStorage.setItem( 'user-schedule', false );
         }
     });
 }
@@ -167,7 +234,7 @@ function deleteScheduledAction( domId, href ) {
         type:       'put',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
         statusCode: {
             200: function() {
                 var $item = $( '#'+domId );
@@ -204,45 +271,6 @@ function deleteScheduledAction( domId, href ) {
     });
 }
 
-function retrieveUserInfo() {
-    // variable to hold request
-    var request;
-
-    // abort any pending request
-    if (request) {
-        request.abort();
-    }
-
-    // fire off the request
-    request = $.ajax({
-        async:      false,
-        url:        apiURL+'/api/user/info/',
-        type:       'get',
-        dataType:   'json',
-        xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
-        statusCode: {
-            401: function() {
-                logout();
-            }
-        }
-    });
-
-    // callback handler that will be called on fail
-    request.fail( function( jqXHR, textStatus, errorThrown ) {
-        if ( errorThrown == '' ) {
-            $( '#wait-modal' ).modal( 'hide' );
-            $( '#connection-error-modal' ).modal( 'show' );
-        }
-    });
-
-    // callback handler that will be called on success
-    request.done( function ( response, textStatus, jqXHR ) {
-        $.cookie.json = true;
-        $.cookie( 'user-info', response );
-    });
-}
-
 function retrieveUserBoats() {
     // variable to hold request
     var request;
@@ -259,7 +287,7 @@ function retrieveUserBoats() {
         type:       'get',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
         statusCode: {
             401: function() {
                 logout();
@@ -269,7 +297,7 @@ function retrieveUserBoats() {
 
     // callback handler that will be called on fail
     request.fail( function( jqXHR, textStatus, errorThrown ) {
-        if ( errorThrown == '' ) {
+        if ( errorThrown === '' ) {
             $( '#wait-modal' ).modal( 'hide' );
             $( '#connection-error-modal' ).modal( 'show' );
         }
@@ -277,8 +305,7 @@ function retrieveUserBoats() {
 
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
-        $.cookie.json = true;
-        $.cookie( 'user-boats', response );
+        localStorage.setItem( 'user-boats', JSON.stringify( response ) );
     });
 }
 
@@ -310,7 +337,7 @@ function reserveSchedule( form ){
         type:       'post',
         data:       serializedData,
         dataType:   'json',
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
         xhrFields:  { withCredentials: false },
         statusCode: {
             400: function() {
@@ -362,7 +389,7 @@ function retrieveAvailableSchedules( search_params ){
         type:       'get',
         dataType:   'json',
         xhrFields:  { withCredentials: false },
-        headers:    { Authorization : $.cookie( 'token-auth' ) },
+        headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
         statusCode: {
             401: function() {
                 logout();
@@ -380,8 +407,7 @@ function retrieveAvailableSchedules( search_params ){
 
     // callback handler that will be called on success
     request.done( function ( response, textStatus, jqXHR ) {
-        $.cookie.json = true;
-        $.cookie( 'available-schedules', response );
+        localStorage.setItem( 'available-schedules', JSON.stringify( response ) );
     });
 }
 
@@ -407,8 +433,9 @@ function updateAvailableSchedules(){
 
     retrieveAvailableSchedules( serializedData );
 
-    $( '#action_time' ).html( buildScheduleOptions( 
-            jQuery.parseJSON( $.cookie( 'available-schedules' ) )
+    $( '#action_time' ).html(
+        buildScheduleOptions( 
+            jQuery.parseJSON( localStorage.getItem( 'available-schedules' ) )
         )
     );
 
