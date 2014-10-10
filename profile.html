@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="go_back">
-            <a href="/desk.html">
+            <a href="desk.html">
                 <span class="glyphicon glyphicon-arrow-left"></span>
             </a>
         </div>
@@ -158,7 +158,7 @@
 
                 retrieveUserInfo();
 
-                var userinfo = jQuery.parseJSON( $.cookie( 'user-info' ) );
+                var userinfo = jQuery.parseJSON( localStorage.getItem( 'user-info' ) );
 
                 $(  '#user-form input[name="id"]' ).val( userinfo.id );
                 $(  '#user-form input[name="first_name"]' ).val( userinfo.first_name );
@@ -220,7 +220,7 @@
                     data:       userData,
                     dataType:   'json',
                     xhrFields:  { withCredentials: false },
-                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
                     statusCode: {
                         400: function( jqXHR ) {
                             var tmpl = $( '#error-template' ).html();
@@ -273,7 +273,7 @@
                     data:       profileData,
                     dataType:   'json',
                     xhrFields:  { withCredentials: false },
-                    headers:    { Authorization : $.cookie( 'token-auth' ) },
+                    headers:    { Authorization : localStorage.getItem( 'token-auth' ) },
                     statusCode: {
                         400: function( jqXHR ) {
                             var tmpl = $( '#error-template' ).html();

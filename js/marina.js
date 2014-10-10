@@ -260,7 +260,7 @@ function deleteScheduledAction( domId, href ) {
 
     // callback handler that will be called on fail
     request.fail( function( jqXHR, textStatus, errorThrown ) {
-        if ( errorThrown == '' ) {
+        if ( errorThrown === '' ) {
             $( '#wait-modal' ).modal( 'hide' );
             $( '#connection-error-modal' ).modal( 'show' );
         }
