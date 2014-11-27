@@ -2,8 +2,8 @@
  * This version is build to use localStorage
  */
 
-//var apiURL  = 'http://marina.andresazp.webfactional.com';
-var apiURL  = 'http://127.0.0.1:8000';
+var apiURL  = 'http://marina.andresazp.webfactional.com';
+//var apiURL  = 'http://127.0.0.1:8000';
 
 /**
  * Checks if the device/browser supports the use of HTML5 localStorage
