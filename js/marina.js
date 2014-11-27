@@ -32,6 +32,10 @@ function supports_json() {
     }
 }
 
+/**
+ * Verifies if an authentication token exists
+ * @return {Boolean} True if the token exists, False otherwise.
+ */
 function is_logged_in() {
     var token = localStorage.getItem( 'token-auth' );
 
