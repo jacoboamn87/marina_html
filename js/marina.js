@@ -2,8 +2,8 @@
  * This version is build to use localStorage
  */
 
-var apiURL  = 'http://marina.andresazp.webfactional.com';
-//var apiURL  = 'http://127.0.0.1:8000';
+//var apiURL  = 'http://marina.andresazp.webfactional.com';
+var apiURL  = 'http://127.0.0.1:8000';
 
 /**
  * Checks if the device/browser supports the use of HTML5 localStorage
@@ -443,4 +443,24 @@ function updateAvailableSchedules(){
     $inputs.prop('disabled', false);
     
     $( '#wait-modal' ).modal( 'toggle' );
+}
+
+function getUrlParameters() {
+    var vars = {}, pair;
+
+    // Get the querystring part of the URL
+    var q = document.URL.split( '?' )[ 1 ];
+    
+    if( q !== undefined ) {
+        // Separate each pair of key=value
+        q = q.split( '&' );
+
+        for( var i = 0; i < q.length; i++ ) {
+            pair = q[ i ].split( '=' );
+
+            vars[ pair[ 0 ] ] = pair[ 1 ];
+        }
+    }
+
+    return vars;
 }
